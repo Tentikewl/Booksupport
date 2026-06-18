@@ -1,12 +1,13 @@
-"""Rebuild ChromaDB from the committed JSON export. Run this at the start of a new session."""
+"""Rebuild ChromaDB from committed JSON exports. Run this at the start of a new session."""
 import json
 from pathlib import Path
 
-def restore(json_path: str = "horus_rising_entities.json") -> None:
+
+def restore_entities(json_path: str = "horus_rising_entities.json") -> None:
     from rag.vector_store import get_entities_collection, reset_collections
 
     data = json.loads(Path(json_path).read_text())
-    print(f"Restoring {len(data)} entities from {json_path}…")
+    print(f"Restoring {len(data)} entities…")
 
     reset_collections()
     col = get_entities_collection()
@@ -27,16 +28,42 @@ def restore(json_path: str = "horus_rising_entities.json") -> None:
             "conflicts": json.dumps(e.get("conflicts", [])),
         })
 
-    # Add in batches of 100
     for i in range(0, len(ids), 100):
         col.add(
             ids=ids[i:i+100],
             documents=docs[i:i+100],
             metadatas=metas[i:i+100],
         )
-        print(f"  {min(i+100, len(ids))}/{len(ids)} entities restored…")
+        print(f"  {min(i+100, len(ids))}/{len(ids)} entities…")
 
-    print("Done. Entity store is ready.")
+    print("Entity store ready.")
+
+
+def restore_passages(json_path: str = "horus_rising_passages.json") -> None:
+    from rag.vector_store import get_passages_collection
+
+    data = json.loads(Path(json_path).read_text())
+    print(f"Restoring {len(data)} passages…")
+
+    col = get_passages_collection()
+
+    ids, docs, metas = [], [], []
+    for p in data:
+        ids.append(p["id"])
+        docs.append(p["text"])
+        metas.append(p["metadata"])
+
+    for i in range(0, len(ids), 100):
+        col.add(
+            ids=ids[i:i+100],
+            documents=docs[i:i+100],
+            metadatas=metas[i:i+100],
+        )
+        print(f"  {min(i+100, len(ids))}/{len(ids)} passages…")
+
+    print("Passage store ready. Full RAG restored.")
+
 
 if __name__ == "__main__":
-    restore()
+    restore_entities()
+    restore_passages()

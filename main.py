@@ -146,12 +146,12 @@ def cmd_generate(args: argparse.Namespace) -> None:
             images = []
 
         # Introduction illustrations for entities first appearing in this chapter
-        chapter_entity_ids = state.get(chapter_id, {}).get("entity_ids", [])
-        new_entities = []
-        for eid in chapter_entity_ids:
-            record = get_entity(eid)
-            if record and record.get("first_appearance", "").startswith(chapter_id):
-                new_entities.append(record)
+        # Query ChromaDB directly by first_appearance to avoid state file ID mismatch
+        all_entities = get_all_entities()
+        new_entities = [
+            e for e in all_entities
+            if e.get("first_appearance", "").startswith(chapter_id)
+        ]
 
         intro_images = []
         if new_entities:

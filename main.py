@@ -132,29 +132,68 @@ def cmd_full(args: argparse.Namespace) -> None:
     cmd_generate(args)
 
 
+def cmd_test_image(_args: argparse.Namespace) -> None:
+    """Generate a single test image from a hardcoded beat to verify the pipeline."""
+    from generation.image_generator import generate_image
+
+    if not config.REPLICATE_API_TOKEN:
+        sys.exit("REPLICATE_API_TOKEN is not set. Export it before running test-image.")
+
+    test_prompt = (
+        "Detailed fantasy illustration, painterly, dramatic lighting, "
+        "cinematic composition, high detail, digital art\n\n"
+        "[SCENE] A lone warrior stands at the edge of a cliff overlooking a vast burning city — "
+        "crumbling stone battlements, smoke-filled sky\n\n"
+        "[CHARACTERS PRESENT]\n"
+        "- Warrior: tall figure in battered silver armour, visor raised, expression grim\n\n"
+        "[MOOD] foreboding\n\n"
+        "[EXCLUDE] Do not show characters not listed above. Do not add background figures."
+    )
+
+    output_dir = config.OUTPUT_DIR / "test"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    dest = output_dir / "test_image.jpg"
+
+    print("Generating test image…")
+    print(f"  Prompt length: {len(test_prompt)} chars")
+    result = generate_image(test_prompt, dest)
+    print(f"  Saved to: {result}")
+    print("Test image generation successful.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="book-companion",
         description="Book Companion — Illustrated Edition Generator",
     )
-    parser.add_argument("--input", required=True, help="Path to .epub or .txt book file")
-    parser.add_argument("--title", required=True, help="Book title (used for output directory)")
+    parser.add_argument("--input", default=None, help="Path to .epub or .txt book file")
+    parser.add_argument("--title", default=None, help="Book title (used for output directory)")
     parser.add_argument("--transcribe", action="store_true", help="Transcribe audio input via Whisper first")
     parser.add_argument("--fallback-chunker", action="store_true", dest="fallback_chunker",
                         help="Use simple recursive splitter instead of LumberChunker (cheaper, less accurate)")
     parser.add_argument("--reset", action="store_true", help="Reset vector store before ingesting (fresh run)")
     parser.add_argument(
         "--mode",
-        choices=["full", "extract-only", "generate-only"],
+        choices=["full", "extract-only", "generate-only", "test-image"],
         default="full",
         help=(
             "full: ingest + generate (default); "
             "extract-only: ingest and build entity store only; "
-            "generate-only: generate images from existing entity store"
+            "generate-only: generate images from existing entity store; "
+            "test-image: generate one hardcoded test image to verify the pipeline"
         ),
     )
 
     args = parser.parse_args()
+
+    if args.mode == "test-image":
+        cmd_test_image(args)
+        return
+
+    if not args.input:
+        parser.error("--input is required for mode: " + args.mode)
+    if not args.title:
+        parser.error("--title is required for mode: " + args.mode)
 
     if args.mode == "extract-only":
         cmd_extract_only(args)

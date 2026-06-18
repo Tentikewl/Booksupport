@@ -18,17 +18,30 @@ def generate_image(prompt: str, output_path: Path) -> Path:
 
     client = replicate.Client(api_token=config.REPLICATE_API_TOKEN)
 
-    output = client.run(
-        config.IMAGE_MODEL,
-        input={
-            "prompt": prompt,
-            "width": config.IMAGE_WIDTH,
-            "height": config.IMAGE_HEIGHT,
-            "num_inference_steps": 4,  # flux-schnell uses 1-4 steps
-            "output_format": "jpg",
-            "output_quality": 85,
-        },
-    )
+    delay = 10
+    for attempt in range(5):
+        try:
+            output = client.run(
+                config.IMAGE_MODEL,
+                input={
+                    "prompt": prompt,
+                    "width": config.IMAGE_WIDTH,
+                    "height": config.IMAGE_HEIGHT,
+                    "num_inference_steps": 4,  # flux-schnell uses 1-4 steps
+                    "output_format": "jpg",
+                    "output_quality": 85,
+                },
+            )
+            break
+        except Exception as e:
+            if "429" in str(e) or "throttled" in str(e).lower() or "rate limit" in str(e).lower():
+                if attempt == 4:
+                    raise
+                print(f"\n  Rate limited — waiting {delay}s…")
+                time.sleep(delay)
+                delay *= 2
+            else:
+                raise
 
     # Replicate returns a list of URLs or file-like objects
     if isinstance(output, list):

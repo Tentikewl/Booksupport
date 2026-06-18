@@ -228,9 +228,12 @@ def cmd_rebuild_gallery(args: argparse.Namespace) -> None:
         intro_images = []
         if intro_dir.exists():
             for f in sorted(intro_dir.glob("*.jpg")):
-                entity_id = f.stem
+                stem = f.stem  # e.g. chapter_01_intro_horus_portrait
+                kind = "character" if stem.endswith("_portrait") else "concept"
+                # Strip chapter prefix and _portrait/_concept suffix to get entity ID
+                inner = stem[len(f"{chapter_id}_intro_"):]
+                entity_id = inner[: inner.rfind("_")]
                 entity = next((e for e in entities if e["id"] == entity_id), {"id": entity_id, "name": entity_id})
-                kind = entity.get("type", "character")
                 intro_images.append({"image_path": str(f), "entity": entity, "kind": kind})
 
         chapter_results.append({"chapter_id": chapter_id, "images": images, "intro_images": intro_images})

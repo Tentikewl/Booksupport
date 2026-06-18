@@ -132,35 +132,71 @@ def cmd_full(args: argparse.Namespace) -> None:
     cmd_generate(args)
 
 
+def cmd_test_image(args: argparse.Namespace) -> None:
+    """Generate a single test image to verify the Replicate token and FLUX model work."""
+    from generation.image_generator import generate_image
+
+    if not config.REPLICATE_API_TOKEN:
+        sys.exit("REPLICATE_API_TOKEN is not set. Add it to your .env file.")
+
+    test_prompt = (
+        "Detailed fantasy illustration, painterly, dramatic lighting, cinematic composition, "
+        "high detail, digital art. "
+        "[SCENE] A lone Space Marine in ornate power armour stands on a war-torn hillside "
+        "at dusk, silhouetted against a burning horizon. "
+        "[MOOD] grim, epic"
+    )
+
+    output_dir = config.OUTPUT_DIR / "test"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    dest = output_dir / "test_image.jpg"
+
+    print(f"Sending test prompt to Replicate ({config.IMAGE_MODEL})…")
+    print(f"Output: {dest}\n")
+
+    image_path = generate_image(test_prompt, dest)
+    print(f"\nSuccess! Image saved to: {image_path}")
+    print("Open it to confirm the generation looks correct.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="book-companion",
         description="Book Companion — Illustrated Edition Generator",
     )
-    parser.add_argument("--input", required=True, help="Path to .epub or .txt book file")
-    parser.add_argument("--title", required=True, help="Book title (used for output directory)")
+    parser.add_argument("--input", required=False, help="Path to .epub or .txt book file")
+    parser.add_argument("--title", required=False, help="Book title (used for output directory)")
     parser.add_argument("--transcribe", action="store_true", help="Transcribe audio input via Whisper first")
     parser.add_argument("--fallback-chunker", action="store_true", dest="fallback_chunker",
                         help="Use simple recursive splitter instead of LumberChunker (cheaper, less accurate)")
     parser.add_argument("--reset", action="store_true", help="Reset vector store before ingesting (fresh run)")
     parser.add_argument(
         "--mode",
-        choices=["full", "extract-only", "generate-only"],
+        choices=["full", "extract-only", "generate-only", "test-image"],
         default="full",
         help=(
             "full: ingest + generate (default); "
             "extract-only: ingest and build entity store only; "
-            "generate-only: generate images from existing entity store"
+            "generate-only: generate images from existing entity store; "
+            "test-image: generate one test image to verify Replicate is working"
         ),
     )
 
     args = parser.parse_args()
 
-    if args.mode == "extract-only":
+    if args.mode == "test-image":
+        cmd_test_image(args)
+    elif args.mode == "extract-only":
+        if not args.input or not args.title:
+            parser.error("--input and --title are required for extract-only mode")
         cmd_extract_only(args)
     elif args.mode == "generate-only":
+        if not args.input or not args.title:
+            parser.error("--input and --title are required for generate-only mode")
         cmd_generate(args)
     else:
+        if not args.input or not args.title:
+            parser.error("--input and --title are required for full mode")
         cmd_full(args)
 
 

@@ -245,7 +245,7 @@ def main() -> None:
     parser.add_argument("--chapter", default=None, help="Only generate images for this chapter number (e.g. 1)")
     parser.add_argument(
         "--mode",
-        choices=["full", "extract-only", "generate-only", "test-image"],
+        choices=["full", "extract-only", "generate-only", "merge-entities", "test-image"],
         default="full",
         help=(
             "full: ingest + generate (default); "
@@ -259,6 +259,12 @@ def main() -> None:
 
     if args.mode == "test-image":
         cmd_test_image(args)
+        return
+
+    if args.mode == "merge-entities":
+        from rag.entity_merger import run_merge_pass
+        export = args.input or "horus_rising_entities.json"
+        run_merge_pass(export)
         return
 
     if not args.title:

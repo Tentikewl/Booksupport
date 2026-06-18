@@ -2,6 +2,15 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent
+
+# Load .env if present
+_env = BASE_DIR / ".env"
+if _env.exists():
+    for _line in _env.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
 DATA_DIR = BASE_DIR / "data"
 BOOKS_DIR = DATA_DIR / "books"
 CHROMA_DIR = DATA_DIR / "chroma_db"

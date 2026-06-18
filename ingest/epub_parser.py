@@ -33,11 +33,17 @@ def parse_txt(path: Path) -> dict[str, str]:
     raw = path.read_text(encoding="utf-8", errors="replace")
     raw = _clean(raw)
 
-    # Split on common chapter markers
-    pattern = re.compile(
+    # Try standard "Chapter X" / "PART X" markers first
+    standard = re.compile(
         r"(?m)^(?:CHAPTER|Chapter|PART|Part)\s+(?:\d+|[IVXLC]+)[^\n]*$"
     )
-    boundaries = [m.start() for m in pattern.finditer(raw)]
+    boundaries = [m.start() for m in standard.finditer(raw)]
+
+    # Fall back to word-number chapter headings (e.g. Black Library novels:
+    # "ONE", "TWO" … on a line by themselves, separated by prose).
+    # Filter out TOC runs where two markers appear within 10 lines of each other.
+    if not boundaries:
+        boundaries = _find_wordnum_chapters(raw)
 
     if not boundaries:
         return {"chapter_01": raw}
@@ -46,10 +52,57 @@ def parse_txt(path: Path) -> dict[str, str]:
     for i, start in enumerate(boundaries):
         end = boundaries[i + 1] if i + 1 < len(boundaries) else len(raw)
         text = raw[start:end].strip()
-        if text:
+        if len(text) > 200:  # skip near-empty sections
             chapters[f"chapter_{i + 1:02d}"] = text
 
     return chapters
+
+
+_WORD_NUMS = {
+    "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE",
+    "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN",
+    "SEVENTEEN", "EIGHTEEN", "NINETEEN", "TWENTY",
+}
+_WORDNUM_RE = re.compile(r"(?m)^(" + "|".join(_WORD_NUMS) + r")$")
+
+
+def _find_wordnum_chapters(raw: str) -> list[int]:
+    """Find chapter boundaries marked by standalone word-numbers, skipping TOC runs."""
+    lines = raw.split("\n")
+    line_starts: list[int] = []  # char offset of each line start
+    pos = 0
+    for line in lines:
+        line_starts.append(pos)
+        pos += len(line) + 1  # +1 for \n
+
+    candidates: list[tuple[int, int]] = []  # (line_index, char_offset)
+    for i, line in enumerate(lines):
+        if line.strip() in _WORD_NUMS:
+            candidates.append((i, line_starts[i]))
+
+    if not candidates:
+        return []
+
+    # Filter: keep only candidates that are NOT part of a TOC run.
+    # A run = two candidates whose line indices are within 3 of each other.
+    def in_run(idx: int) -> bool:
+        for j, (li, _) in enumerate(candidates):
+            if j == idx:
+                continue
+            if abs(li - candidates[idx][0]) <= 3:
+                return True
+        return False
+
+    body_candidates = [
+        char_off
+        for idx, (_, char_off) in enumerate(candidates)
+        if not in_run(idx)
+    ]
+
+    # Also skip anything before the first 500 chars (always front matter)
+    body_candidates = [c for c in body_candidates if c > 500]
+
+    return sorted(body_candidates)
 
 
 def load_book(path: Path) -> dict[str, str]:

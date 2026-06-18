@@ -22,7 +22,7 @@ REPLICATE_API_TOKEN = os.environ.get("REPLICATE_API_TOKEN", "")
 # LLM models
 CHUNKER_MODEL = "claude-haiku-4-5-20251001"
 EXTRACTOR_MODEL = "claude-haiku-4-5-20251001"
-SCENE_MODEL = "claude-haiku-4-5-20251001"
+SCENE_MODEL = "claude-sonnet-4-6"
 
 # Image generation
 IMAGE_MODEL = "black-forest-labs/flux-schnell"

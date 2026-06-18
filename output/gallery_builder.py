@@ -1,6 +1,5 @@
 """Build a static HTML gallery from generated chapter images and entity data."""
 from __future__ import annotations
-import base64
 import json
 import shutil
 from pathlib import Path
@@ -123,10 +122,14 @@ _HTML_LIGHTBOX = """\
 """
 
 
-def _img_to_b64(path: Path) -> str:
-    data = path.read_bytes()
-    b64 = base64.b64encode(data).decode()
-    return f"data:image/jpeg;base64,{b64}"
+def _copy_image(src: Path, output_dir: Path) -> str:
+    """Copy image into gallery/images/ and return its relative URL."""
+    rel = src.relative_to(config.OUTPUT_DIR)
+    dest = output_dir / "images" / rel
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if not dest.exists() or dest.stat().st_mtime < src.stat().st_mtime:
+        shutil.copy2(src, dest)
+    return "images/" + str(rel).replace("\\", "/")
 
 
 def build_gallery(
@@ -157,7 +160,7 @@ def build_gallery(
             beat_label = f"Beat {i}"
             if position:
                 beat_label += f" · {int(float(position) * 100)}% through chapter"
-            src = _img_to_b64(img_path) if img_path.exists() else ""
+            src = _copy_image(img_path, output_dir) if img_path.exists() else ""
             beats_html.append(
                 f'<div class="beat-card" onclick="openLightbox({json.dumps(src)}, {json.dumps(desc)}, {json.dumps(mood)})">'
                 f'<img src="{src}" alt="{_esc(desc)}" loading="lazy">'
@@ -179,7 +182,7 @@ def build_gallery(
             desc = item.get("change_description", "") if is_reintro else entity.get("canonical_description", "")
             label = f"{'Transformation' if is_reintro else ('Portrait' if kind == 'character' else 'Concept')} — {name}"
             badge = "Transformation" if is_reintro else ("New Character" if kind == "character" else "New " + kind.title())
-            src = _img_to_b64(img_path) if img_path.exists() else ""
+            src = _copy_image(img_path, output_dir) if img_path.exists() else ""
             intros_html.append(
                 f'<div class="beat-card intro-card" onclick="openLightbox({json.dumps(src)}, {json.dumps(label)}, {json.dumps(kind)})">'
                 f'<img src="{src}" alt="{_esc(name)}" loading="lazy">'

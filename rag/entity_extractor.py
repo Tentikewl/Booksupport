@@ -2,7 +2,6 @@
 from __future__ import annotations
 import json
 import re
-from typing import Any
 
 import anthropic
 
@@ -37,13 +36,6 @@ KNOWN ENTITIES: {known_ids}
 PASSAGE:
 {text}
 """
-
-
-def _embed(texts: list[str]) -> list[list[float]]:
-    from openai import OpenAI
-    client = OpenAI(api_key=config.OPENAI_API_KEY)
-    resp = client.embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
-    return [item.embedding for item in resp.data]
 
 
 def _call_claude(prompt: str) -> str:
@@ -112,11 +104,9 @@ def extract_entities_from_chunk(chunk: Chunk) -> list[dict]:
             entity["first_appearance"] = chunk.chapter_id
 
             description = entity.get("canonical_description", entity.get("name", eid))
-            embedding = _embed([description])[0]
 
             col.add(
                 ids=[eid],
-                embeddings=[embedding],
                 documents=[description],
                 metadatas=[{
                     "name": entity.get("name", eid),
@@ -172,11 +162,9 @@ def _merge_entity(col, eid: str, update: dict, chapter_id: str) -> None:
     })
 
     final_desc = new_desc if new_desc else old_desc
-    embedding = _embed([final_desc])[0]
 
     col.update(
         ids=[eid],
-        embeddings=[embedding],
         documents=[final_desc],
         metadatas=[meta],
     )

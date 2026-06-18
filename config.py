@@ -8,16 +8,12 @@ CHROMA_DIR = DATA_DIR / "chroma_db"
 OUTPUT_DIR = DATA_DIR / "output"
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 REPLICATE_API_TOKEN = os.environ.get("REPLICATE_API_TOKEN", "")
 
 # LLM models
 CHUNKER_MODEL = "claude-haiku-4-5-20251001"
 EXTRACTOR_MODEL = "claude-sonnet-4-6"
 SCENE_MODEL = "claude-sonnet-4-6"
-
-# Embedding
-EMBEDDING_MODEL = "text-embedding-3-small"
 
 # Image generation
 IMAGE_MODEL = "black-forest-labs/flux-schnell"

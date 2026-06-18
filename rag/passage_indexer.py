@@ -33,13 +33,6 @@ def _split_child_chunks(chunk: Chunk, target_tokens: int = config.CHILD_CHUNK_TO
     return children
 
 
-def _embed(texts: list[str]) -> list[list[float]]:
-    from openai import OpenAI
-    client = OpenAI(api_key=config.OPENAI_API_KEY)
-    resp = client.embeddings.create(model=config.EMBEDDING_MODEL, input=texts)
-    return [item.embedding for item in resp.data]
-
-
 def index_chunk(chunk: Chunk, entity_ids_present: list[str]) -> int:
     """Index child passages from a parent chunk. Returns number of passages added."""
     col = get_passages_collection()
@@ -48,16 +41,11 @@ def index_chunk(chunk: Chunk, entity_ids_present: list[str]) -> int:
     if not children:
         return 0
 
-    embeddings = _embed(children)
-
     ids = []
     metas = []
-    docs = []
 
-    for i, (text, emb) in enumerate(zip(children, embeddings)):
-        child_id = f"{chunk.chunk_id}_child_{i:03d}"
-        ids.append(child_id)
-        docs.append(text)
+    for i, text in enumerate(children):
+        ids.append(f"{chunk.chunk_id}_child_{i:03d}")
         metas.append({
             "parent_chunk_id": chunk.chunk_id,
             "chapter": chunk.chapter_id,
@@ -65,7 +53,7 @@ def index_chunk(chunk: Chunk, entity_ids_present: list[str]) -> int:
             "chunk_position": chunk.position + (i / max(len(children), 1)) * 0.01,
         })
 
-    col.add(ids=ids, embeddings=embeddings, documents=docs, metadatas=metas)
+    col.add(ids=ids, documents=children, metadatas=metas)
     return len(ids)
 
 

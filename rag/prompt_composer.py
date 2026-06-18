@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from rag.passage_indexer import query_passages
 from rag.entity_extractor import get_entity
+from rag.glossary import expand_prompt
 
 
 _PROMPT_TEMPLATE = """\
@@ -82,10 +83,11 @@ def compose_prompt(beat: dict) -> str:
 
     character_block = "\n".join(char_lines) if char_lines else "- No named characters described"
 
-    return _PROMPT_TEMPLATE.format(
+    body = _PROMPT_TEMPLATE.format(
         style=_STYLE,
-        scene_description=visual_description,
-        location_description=location_desc,
-        character_block=character_block,
+        scene_description=expand_prompt(visual_description),
+        location_description=expand_prompt(location_desc),
+        character_block=expand_prompt(character_block),
         mood=mood or "atmospheric",
     )
+    return body

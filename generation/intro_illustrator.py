@@ -34,13 +34,11 @@ Accurate detail, dramatic atmosphere. No unrelated figures or elements.\
 """
 
 
-def _is_significant(entity: dict) -> bool:
+def _significance_score(entity: dict) -> int:
+    """Score an entity by visual richness. Higher = more worth illustrating."""
     desc = entity.get("canonical_description", "")
     notes = entity.get("visual_notes", [])
-    # Skip entities with no visual substance
-    if len(desc) < 40 and not notes:
-        return False
-    # Skip pure behavioural entries with no visual content
+    score = 0
     visual_keywords = [
         "armour", "armor", "wear", "clad", "tall", "short", "hair", "eye",
         "face", "skin", "built", "figure", "spacecraft", "vehicle", "ship",
@@ -48,7 +46,22 @@ def _is_significant(entity: dict) -> bool:
         "robe", "cloth", "uniform", "plate", "helm", "helmet",
     ]
     combined = (desc + " ".join(notes)).lower()
-    return any(kw in combined for kw in visual_keywords)
+    score += sum(1 for kw in visual_keywords if kw in combined)
+    score += len(notes) * 2       # visual notes are high signal
+    score += min(len(desc) // 50, 5)  # description length, capped
+    return score
+
+
+def _is_significant(entity: dict) -> bool:
+    desc = entity.get("canonical_description", "")
+    notes = entity.get("visual_notes", [])
+    if len(desc) < 40 and not notes:
+        return False
+    return _significance_score(entity) >= 3
+
+
+import config as _config
+MAX_INTROS_PER_CHAPTER = _config.MAX_INTROS_PER_CHAPTER
 
 
 def build_intro_prompts(chapter_id: str, entities: list[dict]) -> list[dict]:
@@ -56,10 +69,17 @@ def build_intro_prompts(chapter_id: str, entities: list[dict]) -> list[dict]:
     Given entities first appearing in this chapter, return intro illustration specs.
     Each spec: {entity, prompt, filename, kind}
     """
+    # Filter to significant entities and rank by visual richness
+    significant = [e for e in entities if _is_significant(e)]
+    # Characters first, then others, both sorted by score descending
+    characters = sorted([e for e in significant if e["type"] == "character"],
+                        key=_significance_score, reverse=True)
+    others = sorted([e for e in significant if e["type"] != "character"],
+                    key=_significance_score, reverse=True)
+    ranked = (characters + others)[:MAX_INTROS_PER_CHAPTER]
+
     specs = []
-    for entity in entities:
-        if not _is_significant(entity):
-            continue
+    for entity in ranked:
 
         name = entity.get("name", entity["id"])
         desc = entity.get("canonical_description", "")

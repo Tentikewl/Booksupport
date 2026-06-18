@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""Book Companion — CLI entry point."""
+from __future__ import annotations
+import argparse
+import json
+import sys
+from pathlib import Path
+
+import config
+
+
+def cmd_ingest(args: argparse.Namespace) -> None:
+    from ingest.epub_parser import load_book
+    from ingest.chunker import lumberchunk, fallback_chunk
+    from rag.entity_extractor import extract_entities_from_chunk
+    from rag.passage_indexer import index_chunk
+    from rag.vector_store import reset_collections
+
+    input_path = Path(args.input)
+    if not input_path.exists():
+        sys.exit(f"File not found: {input_path}")
+
+    if args.transcribe:
+        from ingest.whisper_transcriber import transcribe
+        txt_path = input_path.with_suffix(".txt")
+        transcribe(input_path, txt_path)
+        input_path = txt_path
+
+    print(f"Loading {input_path.name}…")
+    chapters = load_book(input_path)
+    print(f"  Found {len(chapters)} chapter(s)")
+
+    if args.reset:
+        print("Resetting vector store…")
+        reset_collections()
+
+    chunk_fn = fallback_chunk if args.fallback_chunker else lumberchunk
+    chunk_mode = "fallback" if args.fallback_chunker else "LumberChunker"
+
+    state_path = config.DATA_DIR / f"{args.title.replace(' ', '_')}_state.json"
+    state: dict = {}
+
+    for chapter_id, chapter_text in chapters.items():
+        print(f"\n[{chapter_id}] Chunking with {chunk_mode}…")
+        chunks = chunk_fn(chapter_text, chapter_id)
+        print(f"  {len(chunks)} chunk(s)")
+
+        chapter_entity_ids: list[str] = []
+        for i, chunk in enumerate(chunks):
+            print(f"  Extracting entities from chunk {i + 1}/{len(chunks)}…", end="\r")
+            new_entities = extract_entities_from_chunk(chunk)
+            chunk_entity_ids = [e["id"] for e in new_entities]
+            chapter_entity_ids.extend(chunk_entity_ids)
+            index_chunk(chunk, chunk_entity_ids)
+
+        state[chapter_id] = {
+            "n_chunks": len(chunks),
+            "entity_ids": list(set(chapter_entity_ids)),
+        }
+        print(f"  Done — {len(set(chapter_entity_ids))} new entities")
+
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(state, indent=2))
+    print(f"\nIngest complete. State saved to {state_path}")
+
+
+def cmd_generate(args: argparse.Namespace) -> None:
+    from generation.scene_detector import detect_beats
+    from rag.prompt_composer import compose_prompt
+    from generation.image_generator import generate_chapter_images
+    from rag.entity_extractor import get_all_entities
+    from ingest.epub_parser import load_book
+
+    input_path = Path(args.input)
+    if not input_path.exists():
+        sys.exit(f"File not found: {input_path}")
+
+    chapters = load_book(input_path)
+    entities = get_all_entities()
+    known_ids = [e["id"] for e in entities]
+
+    title_slug = args.title.replace(" ", "_")
+    output_dir = config.OUTPUT_DIR / title_slug
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    chapter_results: list[dict] = []
+
+    for chapter_id, chapter_text in chapters.items():
+        print(f"\n[{chapter_id}] Detecting scene beats…")
+        beats = detect_beats(chapter_id, chapter_text, known_ids)
+        print(f"  {len(beats)} beat(s) above visual strength threshold")
+
+        if not beats:
+            chapter_results.append({"chapter_id": chapter_id, "images": []})
+            continue
+
+        prompts = [compose_prompt(beat) for beat in beats]
+        print(f"  Generating {len(beats)} image(s)…")
+        images = generate_chapter_images(beats, prompts, chapter_id, output_dir)
+        chapter_results.append({"chapter_id": chapter_id, "images": images})
+
+    # Save prompt log for inspection
+    log_path = output_dir / "prompts.json"
+    log_data = [
+        {"chapter": ch["chapter_id"], "beats": ch["images"]}
+        for ch in chapter_results
+    ]
+    log_path.write_text(json.dumps(log_data, indent=2, default=str))
+
+    # Build gallery
+    from output.gallery_builder import build_gallery
+    gallery_path = build_gallery(args.title, chapter_results, entities, output_dir / "gallery")
+    print(f"\nDone! Open {gallery_path} in a browser.")
+
+
+def cmd_extract_only(args: argparse.Namespace) -> None:
+    """Run ingestion pipeline without image generation."""
+    args.reset = getattr(args, "reset", False)
+    args.transcribe = False
+    args.fallback_chunker = getattr(args, "fallback_chunker", False)
+    cmd_ingest(args)
+
+    from rag.entity_extractor import get_all_entities
+    entities = get_all_entities()
+    print(f"\n--- Entity Store Summary ({len(entities)} entities) ---")
+    for e in sorted(entities, key=lambda x: x.get("appearance_count", 0), reverse=True)[:20]:
+        print(f"  [{e['type']:10s}] {e['name']:30s}  (appearances: {e.get('appearance_count', 1)})")
+
+
+def cmd_full(args: argparse.Namespace) -> None:
+    cmd_ingest(args)
+    cmd_generate(args)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog="book-companion",
+        description="Book Companion — Illustrated Edition Generator",
+    )
+    parser.add_argument("--input", required=True, help="Path to .epub or .txt book file")
+    parser.add_argument("--title", required=True, help="Book title (used for output directory)")
+    parser.add_argument("--transcribe", action="store_true", help="Transcribe audio input via Whisper first")
+    parser.add_argument("--fallback-chunker", action="store_true", dest="fallback_chunker",
+                        help="Use simple recursive splitter instead of LumberChunker (cheaper, less accurate)")
+    parser.add_argument("--reset", action="store_true", help="Reset vector store before ingesting (fresh run)")
+    parser.add_argument(
+        "--mode",
+        choices=["full", "extract-only", "generate-only"],
+        default="full",
+        help=(
+            "full: ingest + generate (default); "
+            "extract-only: ingest and build entity store only; "
+            "generate-only: generate images from existing entity store"
+        ),
+    )
+
+    args = parser.parse_args()
+
+    if args.mode == "extract-only":
+        cmd_extract_only(args)
+    elif args.mode == "generate-only":
+        cmd_generate(args)
+    else:
+        cmd_full(args)
+
+
+if __name__ == "__main__":
+    main()

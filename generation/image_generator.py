@@ -34,10 +34,11 @@ def generate_image(prompt: str, output_path: Path) -> Path:
             )
             break
         except Exception as e:
-            if "429" in str(e) or "throttled" in str(e).lower() or "rate limit" in str(e).lower():
+            err = str(e)
+            if "429" in err or "throttled" in err.lower() or "rate limit" in err.lower() or "unexpected error" in err.lower() or "E9" in err:
                 if attempt == 4:
                     raise
-                print(f"\n  Rate limited — waiting {delay}s…")
+                print(f"\n  Error ({err[:60]}) — retrying in {delay}s…")
                 time.sleep(delay)
                 delay *= 2
             else:

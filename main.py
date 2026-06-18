@@ -140,13 +140,17 @@ def cmd_test_image(_args: argparse.Namespace) -> None:
         sys.exit("REPLICATE_API_TOKEN is not set. Export it before running test-image.")
 
     test_prompt = (
-        "Detailed fantasy illustration, painterly, dramatic lighting, "
-        "cinematic composition, high detail, digital art\n\n"
-        "[SCENE] A lone warrior stands at the edge of a cliff overlooking a vast burning city — "
-        "crumbling stone battlements, smoke-filled sky\n\n"
+        "Grimdark sci-fi illustration, Warhammer 40K aesthetic, hyper-detailed power armour, "
+        "cinematic dramatic lighting, digital art, highly detailed\n\n"
+        "[SCENE] A lone Space Marine stands at the edge of a shattered rockcrete parapet overlooking "
+        "a burning hive city — smoke pillars rising from collapsed spires, tracer fire arcing through "
+        "an ash-choked sky, debris and bodies on the ground far below\n\n"
         "[CHARACTERS PRESENT]\n"
-        "- Warrior: tall figure in battered silver armour, visor raised, expression grim\n\n"
-        "[MOOD] foreboding\n\n"
+        "- Space Marine: towering superhuman warrior in massive cobalt-blue ceramite power armour, "
+        "gold aquila emblem on chest, sealed helmet with glowing red eye-lenses, "
+        "white chapter pauldron with skull insignia, bolter held two-handed at rest, "
+        "cloak tattered and scorched, standing motionless amid the chaos\n\n"
+        "[MOOD] foreboding, resolute, grimdark\n\n"
         "[EXCLUDE] Do not show characters not listed above. Do not add background figures."
     )
 

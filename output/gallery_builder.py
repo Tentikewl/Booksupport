@@ -73,6 +73,8 @@ _HTML_HEAD = """\
   .beat-number {{ font-size: .7rem; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .3rem; }}
   .beat-caption p {{ font-size: .82rem; color: var(--text); line-height: 1.5; }}
   .beat-mood {{ font-size: .72rem; color: var(--muted); margin-top: .35rem; text-transform: uppercase; letter-spacing: .08em; }}
+  .intro-section-title {{ font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 .75rem; opacity: .7; }}
+  .intro-label {{ color: var(--accent) !important; }}
   /* Lightbox */
   #lightbox {{
     display: none; position: fixed; inset: 0;
@@ -144,6 +146,7 @@ def build_gallery(
     # Chapter sections
     chapter_sections: list[str] = []
     for ch in chapter_results:
+        # Scene beats
         beats_html: list[str] = []
         for i, item in enumerate(ch.get("images", []), 1):
             beat = item["beat"]
@@ -154,12 +157,7 @@ def build_gallery(
             beat_label = f"Beat {i}"
             if position:
                 beat_label += f" · {int(float(position) * 100)}% through chapter"
-
-            if img_path.exists():
-                src = _img_to_b64(img_path)
-            else:
-                src = ""
-
+            src = _img_to_b64(img_path) if img_path.exists() else ""
             beats_html.append(
                 f'<div class="beat-card" onclick="openLightbox({json.dumps(src)}, {json.dumps(desc)}, {json.dumps(mood)})">'
                 f'<img src="{src}" alt="{_esc(desc)}" loading="lazy">'
@@ -170,11 +168,39 @@ def build_gallery(
                 f'</div></div>'
             )
 
-        chapter_sections.append(
+        # Introduction illustrations
+        intros_html: list[str] = []
+        for item in ch.get("intro_images", []):
+            entity = item["entity"]
+            img_path = Path(item["image_path"])
+            name = entity.get("name", entity.get("id", ""))
+            kind = item["kind"]
+            desc = entity.get("canonical_description", "")
+            label = f"{'Portrait' if kind == 'character' else 'Concept'} — {name}"
+            src = _img_to_b64(img_path) if img_path.exists() else ""
+            intros_html.append(
+                f'<div class="beat-card intro-card" onclick="openLightbox({json.dumps(src)}, {json.dumps(label)}, {json.dumps(kind)})">'
+                f'<img src="{src}" alt="{_esc(name)}" loading="lazy">'
+                f'<div class="beat-caption">'
+                f'<div class="beat-number intro-label">{"New Character" if kind == "character" else "New " + kind.title()}</div>'
+                f'<p>{_esc(name)}</p>'
+                f'<div class="beat-mood">{_esc(desc[:120])}{"…" if len(desc) > 120 else ""}</div>'
+                f'</div></div>'
+            )
+
+        section_html = (
             f'<section class="chapter-section" id="{ch["chapter_id"]}">'
             f'<h2 class="chapter-title">{ch["chapter_id"].replace("_", " ").title()}</h2>'
-            f'<div class="beats-grid">{"".join(beats_html)}</div></section>'
         )
+        if beats_html:
+            section_html += f'<div class="beats-grid">{"".join(beats_html)}</div>'
+        if intros_html:
+            section_html += (
+                f'<h3 class="intro-section-title">Introductions</h3>'
+                f'<div class="beats-grid">{"".join(intros_html)}</div>'
+            )
+        section_html += '</section>'
+        chapter_sections.append(section_html)
 
     total_images = sum(len(ch.get("images", [])) for ch in chapter_results)
 

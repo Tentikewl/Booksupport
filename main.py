@@ -91,7 +91,8 @@ def cmd_ingest(args: argparse.Namespace) -> None:
 def cmd_generate(args: argparse.Namespace) -> None:
     from rag.prompt_composer import compose_prompt
     from generation.image_generator import generate_chapter_images
-    from rag.entity_extractor import get_all_entities
+    from generation.intro_illustrator import generate_intro_images
+    from rag.entity_extractor import get_all_entities, get_entity
 
     entities = get_all_entities()
     known_ids = [e["id"] for e in entities]
@@ -126,24 +127,48 @@ def cmd_generate(args: argparse.Namespace) -> None:
             for ch_id, ch_text in chapters.items()
         }
 
+    # Load state to know which entities first appear in each chapter
+    title_slug = args.title.replace(" ", "_")
+    state_path = config.DATA_DIR / f"{title_slug}_state.json"
+    state: dict = json.loads(state_path.read_text()) if state_path.exists() else {}
+
     chapter_results: list[dict] = []
 
     for chapter_id, beats in all_beats.items():
         print(f"\n[{chapter_id}] {len(beats)} beat(s) above visual strength threshold")
 
-        if not beats:
-            chapter_results.append({"chapter_id": chapter_id, "images": []})
-            continue
+        # Scene beat images
+        if beats:
+            prompts = [compose_prompt(beat) for beat in beats]
+            print(f"  Generating {len(beats)} scene image(s)…")
+            images = generate_chapter_images(beats, prompts, chapter_id, output_dir)
+        else:
+            images = []
 
-        prompts = [compose_prompt(beat) for beat in beats]
-        print(f"  Generating {len(beats)} image(s)…")
-        images = generate_chapter_images(beats, prompts, chapter_id, output_dir)
-        chapter_results.append({"chapter_id": chapter_id, "images": images})
+        # Introduction illustrations for entities first appearing in this chapter
+        chapter_entity_ids = state.get(chapter_id, {}).get("entity_ids", [])
+        new_entities = []
+        for eid in chapter_entity_ids:
+            record = get_entity(eid)
+            if record and record.get("first_appearance", "").startswith(chapter_id):
+                new_entities.append(record)
+
+        intro_images = []
+        if new_entities:
+            print(f"  {len(new_entities)} new entities — generating introductions…")
+            intro_images = generate_intro_images(chapter_id, new_entities, output_dir)
+            print(f"  {len(intro_images)} introduction illustration(s) generated")
+
+        chapter_results.append({
+            "chapter_id": chapter_id,
+            "images": images,
+            "intro_images": intro_images,
+        })
 
     # Save prompt log for inspection
     log_path = output_dir / "prompts.json"
     log_data = [
-        {"chapter": ch["chapter_id"], "beats": ch["images"]}
+        {"chapter": ch["chapter_id"], "beats": ch["images"], "intros": ch["intro_images"]}
         for ch in chapter_results
     ]
     log_path.write_text(json.dumps(log_data, indent=2, default=str))

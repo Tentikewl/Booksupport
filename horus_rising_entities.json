@@ -81,29 +81,6 @@
     "last_updated_chapter": "chapter_20"
   },
   {
-    "id": "the_warmaster",
-    "name": "The Warmaster",
-    "type": "character",
-    "canonical_description": "Dressed in full ceremonial wargear of gleaming gold and frost white, with a vast mantle of purple scale-skin draped across his shoulders and the eye of Terra on his breastplate. Seated in a high-backed chair near the window ports of his sanctum when at rest, and rises to address gathered officers with commanding presence.",
-    "faction": "63rd Expedition",
-    "first_appearance": "chapter_01",
-    "appearance_count": 4,
-    "aliases": [
-      "The Commander",
-      "Warmaster"
-    ],
-    "visual_notes": [
-      "Title of Warmaster sits uneasily, described as not yet worn in",
-      "Raises glass of wine to the nearest light to examine the colour",
-      "Full ceremonial wargear \u2014 gold and frost white",
-      "Purple scale-skin mantle across shoulders",
-      "Eye of Terra on breastplate",
-      "Broad smile noted in demeanour",
-      "Chose to wear robes and furs rather than battle-plate for the Xenobia Principis summit visit to the Hall of Devices"
-    ],
-    "last_updated_chapter": "chapter_19"
-  },
-  {
     "id": "horus",
     "name": "Horus",
     "type": "character",
@@ -111,7 +88,11 @@
     "faction": "63rd Expedition",
     "first_appearance": "chapter_01",
     "appearance_count": 10,
-    "aliases": [],
+    "aliases": [
+      "The Commander",
+      "The Warmaster",
+      "Warmaster"
+    ],
     "visual_notes": [
       "White-gold armour",
       "Pelts of fur worn over armour",
@@ -151,7 +132,14 @@
       "Carried a fallen Astartes's bolter and sword into combat",
       "Raised sword in his fist while bellowing commands",
       "Teeth bared in the firelight during the melee",
-      "Described as seeming more noble than ever in this moment of fierce combat"
+      "Described as seeming more noble than ever in this moment of fierce combat",
+      "Title of Warmaster sits uneasily, described as not yet worn in",
+      "Raises glass of wine to the nearest light to examine the colour",
+      "Full ceremonial wargear \u2014 gold and frost white",
+      "Purple scale-skin mantle across shoulders",
+      "Eye of Terra on breastplate",
+      "Broad smile noted in demeanour",
+      "Chose to wear robes and furs rather than battle-plate for the Xenobia Principis summit visit to the Hall of Devices"
     ],
     "last_updated_chapter": "chapter_20"
   },
@@ -198,23 +186,6 @@
       "Waiting just inside the sanctum doors"
     ],
     "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "false_emperor",
-    "name": "The Emperor of Mankind (encountered entity)",
-    "type": "character",
-    "canonical_description": "A figure encountered by the 63rd Expedition who claimed to be the Emperor of Mankind. Demanded to know the occupation and agenda of the expedition ships, corrected what he saw as errors in their response, and then demanded fealty.",
-    "faction": "",
-    "first_appearance": "chapter_01",
-    "appearance_count": 1,
-    "aliases": [
-      "Emperor of Mankind"
-    ],
-    "visual_notes": [
-      "Claimed the title Emperor of Mankind",
-      "Described as stoic in his self-proclamation"
-    ],
-    "last_updated_chapter": "chapter_01"
   },
   {
     "id": "63rd_expedition",
@@ -595,7 +566,8 @@
     "first_appearance": "chapter_01",
     "appearance_count": 6,
     "aliases": [
-      "Jubal"
+      "Jubal",
+      "Xavyer Jubal"
     ],
     "visual_notes": [
       "holds bolter in hand",
@@ -626,7 +598,31 @@
       "capable of opening its mouth to a hitherto unimaginable width",
       "reveals an unguessable number of needle teeth",
       "powerful enough to smash a body back and forth against tunnel walls",
-      "able to bite off a human head and upper body in a single motion"
+      "able to bite off a human head and upper body in a single motion",
+      "Shown deference by assembled senior squad leaders, indicating high standing among peers",
+      "raised bolter without warning",
+      "visor swung to look at Loken",
+      "chuckling while claiming to be Samus",
+      "stood at the edge of a subterranean precipice",
+      "appeared mentally compromised, hearing words in falling water",
+      "Blade wedged fast in Loken's left shoulder plate after passing his guard",
+      "Sword punched clean through his chest, tip emerging from his back",
+      "Blood leaking from gash in chest plate, diluting with rain water",
+      "Pink blood-water stain covering belly plate and thigh armour",
+      "Toppled backwards windmilling down stone pier steps",
+      "Came to rest with legs dangling partly over the chasm edge, gradually sliding under own weight",
+      "Fought in a frenzy, discarding all skill \u2014 hacking with combat sword like an axe",
+      "left shoulder plate gripped by Loken during rescue",
+      "right shoulder speared/pinned to steps by Loken's sword to arrest his slide",
+      "described as seeming to weigh a billion tonnes during rescue",
+      "ropes binding him sheared and split as he rose",
+      "frantic wailing screams echoing in the chamber",
+      "hunched posture",
+      "saliva dangling from slack mouth",
+      "struck Loken with a thrashing fist with enough force to send him flying into the pool",
+      "Afterimage superimposed on the creature in Keeler's pict: a semi-human shape echoing the pose and posture of the beast",
+      "Faint but unmistakable shrieking face and wracked body visible in boosted high-contrast pict capture",
+      "Physiognomy and build identifiable as that of an Astartes"
     ],
     "last_updated_chapter": "chapter_09"
   },
@@ -1163,17 +1159,21 @@
     "type": "character",
     "canonical_description": "An elderly man dressed in a floor-length mauve robe. His hair is thin and white, his face thinner still. He stares with glittering, miserable eyes. He speaks with a thick and antique accent.",
     "faction": "",
-    "first_appearance": "chapter_02",
+    "first_appearance": "chapter_01",
     "appearance_count": 1,
     "aliases": [
-      "The so-called Emperor",
-      "Emperor Undisputed"
+      "Emperor Undisputed",
+      "Emperor of Mankind",
+      "The Emperor of Mankind (encountered entity)",
+      "The so-called Emperor"
     ],
     "visual_notes": [
       "Floor-length mauve robe",
       "Thin white hair",
       "Exceptionally thin face",
-      "Glittering, miserable eyes"
+      "Glittering, miserable eyes",
+      "Claimed the title Emperor of Mankind",
+      "Described as stoic in his self-proclamation"
     ],
     "last_updated_chapter": "chapter_02"
   },
@@ -1596,18 +1596,6 @@
     "last_updated_chapter": "chapter_03"
   },
   {
-    "id": "iterator_sindermann",
-    "name": "Sindermann",
-    "type": "character",
-    "canonical_description": "Primary iterator of the 63rd Expedition and the finest iterator Garviel Loken has ever witnessed. Responsible for shaping the expedition's ideological message. Holds deep and intimate friendships with the Warmaster, the expedition master, and senior equerries. His name is known by the Emperor himself. Delivers philosophical briefings to assemblies of two thousand iterator students in the School of Iterators aboard the Vengeful Spirit, wearing simple beige robes of office.",
-    "faction": "63rd_expedition",
-    "first_appearance": "chapter_03",
-    "appearance_count": 2,
-    "aliases": [],
-    "visual_notes": [],
-    "last_updated_chapter": "chapter_03"
-  },
-  {
     "id": "mezzanine_ceiling_mural",
     "name": "Mezzanine Ceiling Mural",
     "type": "object",
@@ -1722,8 +1710,9 @@
     "first_appearance": "chapter_03",
     "appearance_count": 7,
     "aliases": [
-      "primary iterator",
-      "iterator sindermann"
+      "Sindermann",
+      "iterator sindermann",
+      "primary iterator"
     ],
     "visual_notes": [
       "Conducts briefings before audiences of two thousand iterator students",
@@ -1805,8 +1794,9 @@
     "first_appearance": "chapter_03",
     "appearance_count": 1,
     "aliases": [
-      "Spinal hallway",
-      "Great spinal hallway"
+      "Great spinal hallway",
+      "Lateral Promenade",
+      "Spinal hallway"
     ],
     "visual_notes": [
       "Arch-roofed and buttressed construction",
@@ -1815,7 +1805,9 @@
       "Gloomy atmosphere",
       "Faded and battle-damaged Legion and campaign banners hanging from roof at intervals",
       "Illuminated upper-deck galleries overlooking the main floor",
-      "Multiple streams of foot traffic both on main floor and upper galleries"
+      "Multiple streams of foot traffic both on main floor and upper galleries",
+      "Branches off from the spinal hallway",
+      "Servitors carrying books and data-slates pass through it"
     ],
     "last_updated_chapter": "chapter_03"
   },
@@ -1850,21 +1842,6 @@
       "Book stacks rise like towers into misty altitudes",
       "Hovering servitors retrieve plastek-sealed ancient texts from upper stacks",
       "Scholars, sphragists, and metaphrasts work silently at reading desks"
-    ],
-    "last_updated_chapter": "chapter_03"
-  },
-  {
-    "id": "lateral_promenade",
-    "name": "Lateral Promenade",
-    "type": "location",
-    "canonical_description": "A lateral promenade corridor branching off from the spinal hallway of the Vengeful Spirit or expedition vessel, leading towards the archive annex. Servitors waddle along it, their upper limbs laden with books and data-slates.",
-    "faction": "",
-    "first_appearance": "chapter_03",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "Branches off from the spinal hallway",
-      "Servitors carrying books and data-slates pass through it"
     ],
     "last_updated_chapter": "chapter_03"
   },
@@ -2685,27 +2662,6 @@
     "last_updated_chapter": "chapter_05"
   },
   {
-    "id": "bondsman_number_7",
-    "name": "Bondsman Number 7",
-    "type": "object",
-    "canonical_description": "A quarto chapbook of fifty leaves bound in a case of soft, black kit leather with an elasticated strap to keep it closed. Manufactured by the firm Bondsman, based in one of Terra's arctic hives, using antique methods of paper manufacture. The pages are thick cream cartridge paper.",
-    "faction": "",
-    "first_appearance": "chapter_05",
-    "appearance_count": 1,
-    "aliases": [
-      "Karkasy's chapbook",
-      "the chapbook"
-    ],
-    "visual_notes": [
-      "quarto format chapbook",
-      "fifty leaves of thick cream cartridge paper",
-      "soft black kit leather cover",
-      "elasticated strap closure",
-      "packed head to toe in waxed packaging when ordered"
-    ],
-    "last_updated_chapter": "chapter_05"
-  },
-  {
     "id": "city_wall_graffiti",
     "name": "City Wall Graffiti and Inscriptions",
     "type": "object",
@@ -2737,7 +2693,9 @@
     "appearance_count": 2,
     "aliases": [
       "Bondsman Number 7",
-      "chap-book"
+      "Karkasy's chapbook",
+      "chap-book",
+      "the chapbook"
     ],
     "visual_notes": [
       "Kept in a coat pocket",
@@ -2745,7 +2703,12 @@
       "Pages described as precious \u2014 used sparingly",
       "Nearly half the chapbook filled with writing by the end of the scene",
       "Pages torn out when contents judged unsatisfactory",
-      "Paper described as thick and cream-coloured"
+      "Paper described as thick and cream-coloured",
+      "quarto format chapbook",
+      "fifty leaves of thick cream cartridge paper",
+      "soft black kit leather cover",
+      "elasticated strap closure",
+      "packed head to toe in waxed packaging when ordered"
     ],
     "last_updated_chapter": "chapter_05"
   },
@@ -4106,23 +4069,6 @@
     "last_updated_chapter": "chapter_07"
   },
   {
-    "id": "targost",
-    "name": "Targost",
-    "type": "character",
-    "canonical_description": "Captain of the Seventh Company of the Luna Wolves. A blunt-faced man with a deep scar across his brow. Not a son of Horus.",
-    "faction": "luna_wolves",
-    "first_appearance": "chapter_07",
-    "appearance_count": 2,
-    "aliases": [],
-    "visual_notes": [
-      "Blunt-faced",
-      "Deep scar across his brow",
-      "Carries a bolter used in oath of moment ceremonies",
-      "holds the office of lodge master in the warrior lodge"
-    ],
-    "last_updated_chapter": "chapter_15"
-  },
-  {
     "id": "oath_paper_loken",
     "name": "Loken's Oath of Moment Paper",
     "type": "object",
@@ -4515,45 +4461,6 @@
     "last_updated_chapter": "chapter_08"
   },
   {
-    "id": "xavyer_jubal",
-    "name": "Xavyer Jubal",
-    "type": "character",
-    "canonical_description": "Reanimated Luna Wolf, ropes that bound him shearing and splitting as he rises. Screams frantically. Hunched posture with saliva dangling from slack mouth.",
-    "faction": "luna_wolves",
-    "first_appearance": "chapter_08",
-    "appearance_count": 6,
-    "aliases": [
-      "Jubal"
-    ],
-    "visual_notes": [
-      "Shown deference by assembled senior squad leaders, indicating high standing among peers",
-      "raised bolter without warning",
-      "visor swung to look at Loken",
-      "chuckling while claiming to be Samus",
-      "stood at the edge of a subterranean precipice",
-      "appeared mentally compromised, hearing words in falling water",
-      "Blade wedged fast in Loken's left shoulder plate after passing his guard",
-      "Sword punched clean through his chest, tip emerging from his back",
-      "Blood leaking from gash in chest plate, diluting with rain water",
-      "Pink blood-water stain covering belly plate and thigh armour",
-      "Toppled backwards windmilling down stone pier steps",
-      "Came to rest with legs dangling partly over the chasm edge, gradually sliding under own weight",
-      "Fought in a frenzy, discarding all skill \u2014 hacking with combat sword like an axe",
-      "left shoulder plate gripped by Loken during rescue",
-      "right shoulder speared/pinned to steps by Loken's sword to arrest his slide",
-      "described as seeming to weigh a billion tonnes during rescue",
-      "ropes binding him sheared and split as he rose",
-      "frantic wailing screams echoing in the chamber",
-      "hunched posture",
-      "saliva dangling from slack mouth",
-      "struck Loken with a thrashing fist with enough force to send him flying into the pool",
-      "Afterimage superimposed on the creature in Keeler's pict: a semi-human shape echoing the pose and posture of the beast",
-      "Faint but unmistakable shrieking face and wracked body visible in boosted high-contrast pict capture",
-      "Physiognomy and build identifiable as that of an Astartes"
-    ],
-    "last_updated_chapter": "chapter_16"
-  },
-  {
     "id": "terminator_plate",
     "name": "Terminator Plate",
     "type": "object",
@@ -4590,38 +4497,6 @@
       "White bone and rotten tunics dislodged by Terminator footfalls",
       "Hundreds of army trooper bodies littering the shelf and bridges",
       "Fierce verticality of the peaks beyond the bridges"
-    ],
-    "last_updated_chapter": "chapter_08"
-  },
-  {
-    "id": "kasheri",
-    "name": "Kasheri",
-    "type": "location",
-    "canonical_description": "A town situated in the lower gorge beneath the Whisperheads plateau, at compliance with Imperial forces by the time of Loken's arrival.",
-    "faction": "",
-    "first_appearance": "chapter_08",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "located in a lower gorge",
-      "below the plateau and high fortress"
-    ],
-    "last_updated_chapter": "chapter_08"
-  },
-  {
-    "id": "high_fortress",
-    "name": "High Fortress",
-    "type": "location",
-    "canonical_description": "A fortified position high in the bright crags of the Whisperheads, held by insurgents led by an Invisible. Described as looming in white light atop rocky terrain, commanding cross-draw fire lanes over the rock bridges below, making approach a slaughter ground.",
-    "faction": "",
-    "first_appearance": "chapter_08",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "bright crags looming in white light",
-      "commands cross-draw fire lanes",
-      "defended by heavy cannon",
-      "positioned above rock bridges"
     ],
     "last_updated_chapter": "chapter_08"
   },
@@ -4688,7 +4563,9 @@
       "Cold mountains sweeping up into mist beyond",
       "Harsh glaring light with pure quality and thin rain",
       "Strong crosswind making parasol canopies difficult to manage",
-      "Scrubby stretch of white grass and sand near the lander"
+      "Scrubby stretch of white grass and sand near the lander",
+      "located in a lower gorge",
+      "below the plateau and high fortress"
     ],
     "last_updated_chapter": "chapter_08"
   },
@@ -4842,7 +4719,9 @@
     "faction": "",
     "first_appearance": "chapter_08",
     "appearance_count": 1,
-    "aliases": [],
+    "aliases": [
+      "High Fortress"
+    ],
     "visual_notes": [
       "Built into mountain peak",
       "Most structure hidden within rock",
@@ -4852,7 +4731,11 @@
       "Bolted storm-doors",
       "Barricades of rockcrete blocks and heavy iron poles",
       "Automated sentry drones",
-      "Surrounded by sheer drops and unscalable ice"
+      "Surrounded by sheer drops and unscalable ice",
+      "bright crags looming in white light",
+      "commands cross-draw fire lanes",
+      "defended by heavy cannon",
+      "positioned above rock bridges"
     ],
     "last_updated_chapter": "chapter_08"
   },
@@ -4972,7 +4855,9 @@
     "faction": "luna_wolves",
     "first_appearance": "chapter_08",
     "appearance_count": 3,
-    "aliases": [],
+    "aliases": [
+      "Udon"
+    ],
     "visual_notes": [
       "exploded helm from bolter round to the face",
       "fell on his face after being shot",
@@ -5433,22 +5318,6 @@
     "last_updated_chapter": "chapter_11"
   },
   {
-    "id": "murder_world",
-    "name": "Murder",
-    "type": "location",
-    "canonical_description": "A hostile world with nightmarish atmospherics severe enough to scatter drop pods wildly astray from projected landing vectors, potentially destroying many before reaching the ground. The surface is the site of ongoing conflict between the megarachnid and stranded Astartes forces. Storm cover on the surface prevents orbital communication.",
-    "faction": "",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "Nightmarish atmospheric conditions causing severe drop pod scatter",
-      "Storm cover blocks vox contact with fleet in orbit",
-      "Hostile surface environment"
-    ],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
     "id": "emperors_children",
     "name": "Emperor's Children",
     "type": "faction",
@@ -5456,33 +5325,10 @@
     "faction": "",
     "first_appearance": "chapter_11",
     "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "140th_expedition_blood_angels",
-    "name": "140th Expedition Forces",
-    "type": "faction",
-    "canonical_description": "Blood Angels Astartes forces deployed on Murder as part of the 140th Expedition, whose fate is unknown after sixty-six hours of searching by the Emperor's Children reinforcement force. Officially described as requiring 'reinforcement' rather than rescue.",
-    "faction": "Blood Angels",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
     "aliases": [
-      "Blood Angels 140th Expedition"
+      "Emperor's Children Landing Force",
+      "Emperor's Children Taskforce"
     ],
-    "visual_notes": [],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "emperors_children_company_murder",
-    "name": "Emperor's Children Landing Force",
-    "type": "faction",
-    "canonical_description": "A company-strength Emperor's Children force dropped onto Murder, severely scattered by nightmarish atmospherics during descent. Only around one third \u2014 just over thirty men under two captains \u2014 managed to regroup after planetfall.",
-    "faction": "Emperor's Children",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
-    "aliases": [],
     "visual_notes": [],
     "last_updated_chapter": "chapter_11"
   },
@@ -5559,6 +5405,9 @@
     "first_appearance": "chapter_11",
     "appearance_count": 2,
     "aliases": [
+      "Stone Thorn Trees",
+      "stalk forest trees",
+      "stone trees",
       "the first tree",
       "thorn tree"
     ],
@@ -5572,7 +5421,11 @@
       "black blood trickles down from feeding winged megarachnid in the canopy",
       "cracking and clicking sounds of insect feeding audible from beneath",
       "rigid canopies cast grim shadows",
-      "boles used as anchor points for demolition charges"
+      "boles used as anchor points for demolition charges",
+      "Collapsed like buildings or demolished towers when destroyed",
+      "Fractured into brittle splinters and white dust",
+      "Reduced to white slag after the blast and fire",
+      "Large enough to support multiple feeding winged megarachnid clades"
     ],
     "last_updated_chapter": "chapter_14"
   },
@@ -5683,6 +5536,7 @@
     "first_appearance": "chapter_11",
     "appearance_count": 1,
     "aliases": [
+      "Severed Megarachnid Blade-Limb (Lucius)",
       "megarachnid sword-limb",
       "the limb"
     ],
@@ -5694,7 +5548,10 @@
       "Widening joint connecting blade to thicker upper limb section",
       "Upper section armoured in mottled grey metal",
       "Cross-section shows layered construction: metal skin, arthropoid chitin sleeve, pink wet meat core",
-      "Entire limb including base above joint has a cutting edge sharp enough to slice through Astartes gauntlet"
+      "Entire limb including base above joint has a cutting edge sharp enough to slice through Astartes gauntlet",
+      "Base bound with steel paper strips from shield liner",
+      "Wielded in Lucius's left hand",
+      "Used alongside his antique long sword in dual-blade combat style"
     ],
     "last_updated_chapter": "chapter_11"
   },
@@ -5803,24 +5660,6 @@
     "visual_notes": [
       "carries wafer slips from navigation pit",
       "posture suggests readiness to apologise but suppressed by Comnenus's gaze"
-    ],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "one_forty_twenty",
-    "name": "One Forty Twenty",
-    "type": "location",
-    "canonical_description": "A star system designated One Forty Twenty, also known as Murder. Its fourth planet sits at high anchor with multiple ships present. The local sun is yellow and hot, billowing with loud charged particles. Located approximately eighty million kilometres from the Vengeful Spirit's approach vector.",
-    "faction": "",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
-    "aliases": [
-      "Murder"
-    ],
-    "visual_notes": [
-      "yellow and hot local sun",
-      "loud charged particle emissions from sun",
-      "multiple ships at high anchor around fourth planet"
     ],
     "last_updated_chapter": "chapter_11"
   },
@@ -5996,13 +5835,16 @@
     "first_appearance": "chapter_11",
     "appearance_count": 1,
     "aliases": [
-      "xenos beacons",
-      "outstation relays"
+      "Outstation Beacons (Murder System)",
+      "outstation relays",
+      "xenos beacons"
     ],
     "visual_notes": [
       "Signal pattern appears visually like music on the hard light display",
       "Scatter patterns visible as luminous graphics on close breakdown display",
-      "Deliberately structured mathematical sequences"
+      "Deliberately structured mathematical sequences",
+      "Broadcasts described as curious and untranslatable",
+      "Signal interpreted as evidence of sentient life"
     ],
     "last_updated_chapter": "chapter_11"
   },
@@ -6026,7 +5868,10 @@
     "faction": "",
     "first_appearance": "chapter_11",
     "appearance_count": 2,
-    "aliases": [],
+    "aliases": [
+      "Captain Frome",
+      "Khitas Frome"
+    ],
     "visual_notes": [],
     "last_updated_chapter": "chapter_11"
   },
@@ -6042,20 +5887,6 @@
     "visual_notes": [
       "notably large compared to other Imperial army conveyances in the area"
     ],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "khitas_frome",
-    "name": "Khitas Frome",
-    "type": "character",
-    "canonical_description": "Captain of the three Blood Angels companies forming the marrow of the 140th Expedition. No physical description given, known only through his relayed communications.",
-    "faction": "blood_angels",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
-    "aliases": [
-      "Captain Frome"
-    ],
-    "visual_notes": [],
     "last_updated_chapter": "chapter_11"
   },
   {
@@ -6128,27 +5959,22 @@
     "first_appearance": "chapter_11",
     "appearance_count": 1,
     "aliases": [
-      "One Forty Twenty (the world itself)",
-      "Murder"
+      "Murder",
+      "One Forty Twenty",
+      "One Forty Twenty (the world itself)"
     ],
     "visual_notes": [
       "Hazy grey orb when viewed from orbit",
       "Mottled storm patterning visible in atmosphere",
       "Fourth planet of its star system",
-      "Only atmospheric world in the system"
+      "Only atmospheric world in the system",
+      "Nightmarish atmospheric conditions causing severe drop pod scatter",
+      "Storm cover blocks vox contact with fleet in orbit",
+      "Hostile surface environment",
+      "yellow and hot local sun",
+      "loud charged particle emissions from sun",
+      "multiple ships at high anchor around fourth planet"
     ],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "emperors_children_taskforce",
-    "name": "Emperor's Children Taskforce",
-    "type": "faction",
-    "canonical_description": "A comparatively small detachment consisting of a single company of the Emperor's Children Legion, conveyed by the battle-barge Proudheart under the command of Lord Eidolon. Dispatched as critical interim response to the beleaguered 140th Expedition at Murder.",
-    "faction": "emperors_children",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [],
     "last_updated_chapter": "chapter_11"
   },
   {
@@ -6163,21 +5989,6 @@
     "visual_notes": [
       "Eighteen carriers, mass conveyances and escorts",
       "No Mechanicum force present"
-    ],
-    "last_updated_chapter": "chapter_11"
-  },
-  {
-    "id": "outstation_beacons_murder",
-    "name": "Outstation Beacons (Murder System)",
-    "type": "object",
-    "canonical_description": "Curious, untranslatable broadcasts emanating from beacons within the Murder system, representing a clear and manifest trace of sentient life that drew the 140th Expedition to investigate.",
-    "faction": "",
-    "first_appearance": "chapter_11",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "Broadcasts described as curious and untranslatable",
-      "Signal interpreted as evidence of sentient life"
     ],
     "last_updated_chapter": "chapter_11"
   },
@@ -6209,6 +6020,8 @@
     "first_appearance": "chapter_11",
     "appearance_count": 1,
     "aliases": [
+      "140th Expedition Forces",
+      "Blood Angels 140th Expedition",
       "first wave",
       "second wave"
     ],
@@ -6223,7 +6036,10 @@
     "faction": "",
     "first_appearance": "chapter_11",
     "appearance_count": 1,
-    "aliases": [],
+    "aliases": [
+      "140th Expedition Forces",
+      "Blood Angels 140th Expedition"
+    ],
     "visual_notes": [],
     "last_updated_chapter": "chapter_11"
   },
@@ -6313,22 +6129,6 @@
     "last_updated_chapter": "chapter_12"
   },
   {
-    "id": "megarachnid_blade_limb_lucius",
-    "name": "Severed Megarachnid Blade-Limb (Lucius)",
-    "type": "object",
-    "canonical_description": "A severed megarachnid limb-weapon repurposed by Lucius as a secondary sword. The base of the severed limb is wrapped with strips of steel paper taken from the liner of his combat shield to prevent the edge from harming his grip during use.",
-    "faction": "",
-    "first_appearance": "chapter_12",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "Base bound with steel paper strips from shield liner",
-      "Wielded in Lucius's left hand",
-      "Used alongside his antique long sword in dual-blade combat style"
-    ],
-    "last_updated_chapter": "chapter_12"
-  },
-  {
     "id": "sakian",
     "name": "Sakian",
     "type": "character",
@@ -6341,23 +6141,6 @@
       "accompanied Tarvitz and Bulle to plant explosives on megarachnid thorn trees"
     ],
     "last_updated_chapter": "chapter_14"
-  },
-  {
-    "id": "red_earth_clearing",
-    "name": "Red Earth Clearing",
-    "type": "location",
-    "canonical_description": "A sudden and surprising clearing in the megarachnid grass forest on Murder World. A broad field of bare red earth many kilometres square, with no sign that stalks had ever sprouted there. The tall, swishing grass forest surrounds the area on all sides.",
-    "faction": "",
-    "first_appearance": "chapter_12",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "Bare red earth, many kilometres square",
-      "No evidence of stalks ever having grown there",
-      "Surrounded entirely by the tall megarachnid grass forest",
-      "Acts as a disconcerting landmark amid the otherwise uniform forest"
-    ],
-    "last_updated_chapter": "chapter_12"
   },
   {
     "id": "mark_iii_power_armour",
@@ -6426,29 +6209,6 @@
     "aliases": [],
     "visual_notes": [
       "knocked off feet by shield-storm lightning strike"
-    ],
-    "last_updated_chapter": "chapter_12"
-  },
-  {
-    "id": "megarachnid_winged_clade",
-    "name": "Megarachnid Winged Clade",
-    "type": "object",
-    "canonical_description": "A flying biological form of the megarachnid species, distinct from their land-bound cousins. Their bodies are glossy black with fuller and longer abdomens. They possess long, glassy wings that beat so furiously they appear as flickering blurs. Their slender black legs are pulled up beneath them like wrought-iron undercarriages. Their head is crowned with a crest formed into a long, dark, malevolent hook.",
-    "faction": "",
-    "first_appearance": "chapter_12",
-    "appearance_count": 1,
-    "aliases": [
-      "winged clades",
-      "flying things",
-      "flying megarachnid"
-    ],
-    "visual_notes": [
-      "Glossy black bodies",
-      "Abdomens fuller and longer than land-bound megarachnid",
-      "Long glassy wings that blur when beating, producing a strident thrumming noise",
-      "Slender black legs tucked up like wrought-iron undercarriages",
-      "Head crest formed into a long, dark, malevolent hook",
-      "Wings produce a reverberative chopping drone at close range"
     ],
     "last_updated_chapter": "chapter_12"
   },
@@ -6694,6 +6454,7 @@
     "first_appearance": "chapter_13",
     "appearance_count": 1,
     "aliases": [
+      "Silver Lodge Medal",
       "lodge medal",
       "wolf's head medal"
     ],
@@ -6702,7 +6463,8 @@
       "Coin-sized",
       "Wolf's head motif",
       "Crescent moon background",
-      "Unmounted \u2014 no chain or cord attached"
+      "Unmounted \u2014 no chain or cord attached",
+      "small enough to be concealed in a closed hand"
     ],
     "last_updated_chapter": "chapter_13"
   },
@@ -6845,24 +6607,6 @@
     "last_updated_chapter": "chapter_13"
   },
   {
-    "id": "the_retreat",
-    "name": "The Retreat",
-    "type": "location",
-    "canonical_description": "A large assembly chamber aboard the Vengeful Spirit, originally used for large assembly meetings, addresses, and military ceremonies. It was given over to the remembrancers' use and acquired a grubby reputation. Music and unrestrained laughter echo through it, giving it the atmosphere of a small carnival pitched within the austere halls of the grand warship.",
-    "faction": "remembrancer_order",
-    "first_appearance": "chapter_13",
-    "appearance_count": 1,
-    "aliases": [
-      "The Retreat"
-    ],
-    "visual_notes": [
-      "Grubby, well-used atmosphere contrasting with the solemn depths of the Vengeful Spirit",
-      "Jaunty music and unrestrained laughter audible from the entrance",
-      "Remembrancers gather in small social cliques near the entrance"
-    ],
-    "last_updated_chapter": "chapter_13"
-  },
-  {
     "id": "karkasy_printed_sheaf",
     "name": "Karkasy's Printed Sheaf",
     "type": "object",
@@ -6894,34 +6638,19 @@
     "last_updated_chapter": "chapter_13"
   },
   {
-    "id": "silver_lodge_medal",
-    "name": "Silver Lodge Medal",
-    "type": "object",
-    "canonical_description": "A silver medal associated with the warrior lodge fraternity, carried by Aximand and revealed from his hand during a private conversation with Loken. Similar to the medal previously seen on Jubal.",
-    "faction": "",
-    "first_appearance": "chapter_13",
-    "appearance_count": 1,
-    "aliases": [
-      "lodge medal"
-    ],
-    "visual_notes": [
-      "silver in colour",
-      "small enough to be concealed in a closed hand"
-    ],
-    "last_updated_chapter": "chapter_13"
-  },
-  {
     "id": "megarachnid_winged_clade_pursuit",
     "name": "Winged Megarachnid Clade (Pursuit Pair)",
     "type": "object",
     "canonical_description": "Two winged megarachnid clades that disengaged from a feeding group and took to the air. Their wings are described as glass-blurs in yellow light, beating with a sound like a gnat's buzz slowed and amplified to gargantuan, bass volumes. Their bodies are polished black, glinting in lightning flashes. Capable of a near-stall pounce-dive attack. Anatomy includes a thorax that ruptures with smoke and chitin shards when struck by bolter fire, and wings that can be torn off by explosive shockwave.",
     "faction": "",
-    "first_appearance": "chapter_14",
+    "first_appearance": "chapter_12",
     "appearance_count": 1,
     "aliases": [
-      "winged clades",
+      "Megarachnid Winged Clade",
+      "black things",
+      "flying megarachnid",
       "flying things",
-      "black things"
+      "winged clades"
     ],
     "visual_notes": [
       "Wings appear as glass-blurs when beating at speed",
@@ -6930,7 +6659,13 @@
       "Wings produce a bass, amplified buzzing sound",
       "Thorax explodes in smoke and chitin shards when penetrated by bolter rounds",
       "Capable of near-stall pounce-dive attack",
-      "Wings torn off by proximity explosion blast"
+      "Wings torn off by proximity explosion blast",
+      "Glossy black bodies",
+      "Abdomens fuller and longer than land-bound megarachnid",
+      "Long glassy wings that blur when beating, producing a strident thrumming noise",
+      "Slender black legs tucked up like wrought-iron undercarriages",
+      "Head crest formed into a long, dark, malevolent hook",
+      "Wings produce a reverberative chopping drone at close range"
     ],
     "last_updated_chapter": "chapter_14"
   },
@@ -6940,9 +6675,10 @@
     "type": "location",
     "canonical_description": "An open clearing on Murder World covered in red dirt, bordered by the stalk forest. The site of an explosive charge detonation that levelled three stone thorn trees, reducing them to white slag and a thick pall of ash-white dust and smoke. Burning smouldering scads like volcanic out-throw rained down across the area after the blast.",
     "faction": "",
-    "first_appearance": "chapter_14",
+    "first_appearance": "chapter_12",
     "appearance_count": 1,
     "aliases": [
+      "Red Earth Clearing",
       "red earth clearing"
     ],
     "visual_notes": [
@@ -6950,27 +6686,11 @@
       "Adjacent to the edge of the stalk forest",
       "After explosion: heap of white slag burning furiously",
       "Thick pall of ash-white dust and smoke rolling off blast zone",
-      "Burning smouldering scads drizzling down like volcanic out-throw"
-    ],
-    "last_updated_chapter": "chapter_14"
-  },
-  {
-    "id": "stone_thorn_trees_murder",
-    "name": "Stone Thorn Trees",
-    "type": "object",
-    "canonical_description": "Three massive stone thorn trees on Murder World, large enough that winged megarachnid clades fed upon them in groups. When demolished by explosive charges they collapsed like buildings or demolished towers, fracturing into brittle splinters and white dust as they fell into the fireball. Reduced to a heap of white slag after burning.",
-    "faction": "",
-    "first_appearance": "chapter_14",
-    "appearance_count": 1,
-    "aliases": [
-      "stalk forest trees",
-      "stone trees"
-    ],
-    "visual_notes": [
-      "Collapsed like buildings or demolished towers when destroyed",
-      "Fractured into brittle splinters and white dust",
-      "Reduced to white slag after the blast and fire",
-      "Large enough to support multiple feeding winged megarachnid clades"
+      "Burning smouldering scads drizzling down like volcanic out-throw",
+      "Bare red earth, many kilometres square",
+      "No evidence of stalks ever having grown there",
+      "Surrounded entirely by the tall megarachnid grass forest",
+      "Acts as a disconcerting landmark amid the otherwise uniform forest"
     ],
     "last_updated_chapter": "chapter_14"
   },
@@ -7240,53 +6960,27 @@
     "first_appearance": "chapter_14",
     "appearance_count": 2,
     "aliases": [
-      "weavers",
+      "Megarachnid Picket Clade",
+      "Megarachnid Scurrying Builder Clade",
+      "builder forms",
+      "industrious builder forms",
+      "monster 'weaver' forms",
       "monster clade",
-      "monster 'weaver' forms"
+      "outer guards",
+      "picket clades",
+      "warrior forms",
+      "weavers"
     ],
     "visual_notes": [
       "Massive belly full of molten cement-like fluid",
       "Short, heavy limbs",
       "Larger than standard warrior or scurrying builder clades",
       "spatulate-limbed variant carrying cargo of wet milky organic cement",
-      "dies and dumps its cement payload on Lucius, immobilizing him"
-    ],
-    "last_updated_chapter": "chapter_14"
-  },
-  {
-    "id": "megarachnid_builder_scurrying_clade",
-    "name": "Megarachnid Scurrying Builder Clade",
-    "type": "faction",
-    "canonical_description": "Smaller, busy and scurrying megarachnid forms that serve as construction workers. They carry limb loads of wet, milk-white matter to tree bases and regurgitate fluid onto them to act as cement. Their limbs whirr and shape material like the trowels of master builders.",
-    "faction": "megarachnid",
-    "first_appearance": "chapter_14",
-    "appearance_count": 1,
-    "aliases": [
-      "builder forms",
-      "industrious builder forms"
-    ],
-    "visual_notes": [
+      "dies and dumps its cement payload on Lucius, immobilizing him",
       "Smaller than weaver clades",
       "Carry wet, milk-white material in their limbs",
       "Limbs function like trowels when shaping material",
-      "Regurgitate fluid to mix as cement"
-    ],
-    "last_updated_chapter": "chapter_14"
-  },
-  {
-    "id": "megarachnid_picket_clade",
-    "name": "Megarachnid Picket Clade",
-    "type": "faction",
-    "canonical_description": "Warrior forms drawn up as sentinels around the perimeter of megarachnid work sites. They alert to intruders and rush out in defence. Capable of leaping through the air to attack enemies. Possess four limb-blades used to flense opponents apart. One picket warrior bit off Lodoroton's head and proceeded to tear his body apart with its four limb-blades before being killed by a single bolt round.",
-    "faction": "megarachnid",
-    "first_appearance": "chapter_14",
-    "appearance_count": 1,
-    "aliases": [
-      "picket clades",
-      "warrior forms",
-      "outer guards"
-    ],
-    "visual_notes": [
+      "Regurgitate fluid to mix as cement",
       "Warrior forms stationed as perimeter sentinels",
       "Capable of leaping through the air",
       "Four limb-blades used for close combat",
@@ -7527,9 +7221,10 @@
     "type": "character",
     "canonical_description": "A senior Astartes of the Luna Wolves, revealed as the lodge master of the warrior lodge meeting in the aft hold. Wears a hooded cloak during the lodge ceremony, hood drawn down to reveal his face in the candlelight. Speaks gently and with authority.",
     "faction": "Luna Wolves",
-    "first_appearance": "chapter_15",
-    "appearance_count": 1,
+    "first_appearance": "chapter_07",
+    "appearance_count": 2,
     "aliases": [
+      "Targost",
       "lodge master",
       "the hidden voice"
     ],
@@ -7537,7 +7232,11 @@
       "Hooded cloak worn during lodge meeting",
       "Steps forward to receive Loken's combat knife",
       "Face revealed by candlelight when hood is removed",
-      "Identified as the hidden voice and lodge master"
+      "Identified as the hidden voice and lodge master",
+      "Blunt-faced",
+      "Deep scar across his brow",
+      "Carries a bolter used in oath of moment ceremonies",
+      "holds the office of lodge master in the warrior lodge"
     ],
     "last_updated_chapter": "chapter_15"
   },
@@ -7650,20 +7349,6 @@
       "Visible heal-seam along the attachment point",
       "Nero Vipus fidgets with it nervously"
     ],
-    "last_updated_chapter": "chapter_15"
-  },
-  {
-    "id": "udon_lodge_member",
-    "name": "Udon",
-    "type": "character",
-    "canonical_description": "Sergeant Udon, a long-time brother of the warrior lodge aboard the Vengeful Spirit and member of the tenth company. Mentioned posthumously as a lodge member mourned by his brothers.",
-    "faction": "warrior_lodges",
-    "first_appearance": "chapter_15",
-    "appearance_count": 1,
-    "aliases": [
-      "Sergeant Udon"
-    ],
-    "visual_notes": [],
     "last_updated_chapter": "chapter_15"
   },
   {
@@ -8253,16 +7938,21 @@
     "type": "location",
     "canonical_description": "A long, crowded social chamber aboard the Vengeful Spirit situated at the forward end, featuring gilded arches over table booths. The walls and ceilings have been whitewashed or lined with gum-paper by remembrancers, with verses and compositions inscribed upon them. Murals have been written on and painted over, with verses inscribed in patches of sky between ancient heroes, who now wear comical painted beards and eye patches. Golden columns have been half-stripped of gilt down to the ironwork by souvenir-scraping revellers.",
     "faction": "",
-    "first_appearance": "chapter_16",
+    "first_appearance": "chapter_13",
     "appearance_count": 1,
-    "aliases": [],
+    "aliases": [
+      "The Retreat"
+    ],
     "visual_notes": [
       "gilded arches over table booths at forward end",
       "golden columns stripped to ironwork",
       "murals defaced with painted beards and eye patches on ancient heroes",
       "walls and ceilings whitewashed or lined with gum-paper",
       "new composition texts inscribed on whitewashed surfaces",
-      "busy, crowded atmosphere with drinking, gaming, and a viol being played"
+      "busy, crowded atmosphere with drinking, gaming, and a viol being played",
+      "Grubby, well-used atmosphere contrasting with the solemn depths of the Vengeful Spirit",
+      "Jaunty music and unrestrained laughter audible from the entrance",
+      "Remembrancers gather in small social cliques near the entrance"
     ],
     "last_updated_chapter": "chapter_16"
   },
@@ -8613,26 +8303,6 @@
     "last_updated_chapter": "chapter_16"
   },
   {
-    "id": "ullanor_great_triumph",
-    "name": "The Great Triumph at Ullanor",
-    "type": "location",
-    "canonical_description": "A continent planed smooth by Mechanicum industrial meltas and geoformer engines, mountains erased and valleys infilled, leaving a vast endless table of dry polished rock chippings. The stage was so broad it could experience midnight at one end and midday at the other simultaneously. It served as the ceremonial ground for the coronation of the Warmaster and the Emperor's farewell before his departure to Terra.",
-    "faction": "",
-    "first_appearance": "chapter_17",
-    "appearance_count": 1,
-    "aliases": [
-      "The Great Triumph",
-      "Triumph of Ullanor"
-    ],
-    "visual_notes": [
-      "entire continent reshaped into a flat polished surface",
-      "dry polished rock chippings underfoot",
-      "vast enough to span day and night simultaneously",
-      "four Mechanicum labour fleets used to accomplish the work over months"
-    ],
-    "last_updated_chapter": "chapter_17"
-  },
-  {
     "id": "ullanor_triumph",
     "name": "The Ullanor Triumph",
     "type": "location",
@@ -8641,7 +8311,10 @@
     "first_appearance": "chapter_17",
     "appearance_count": 1,
     "aliases": [
+      "The Great Triumph",
+      "The Great Triumph at Ullanor",
       "The Triumph",
+      "Triumph of Ullanor",
       "Ullanor Triumph",
       "Ullanor review"
     ],
@@ -8661,7 +8334,11 @@
       "Unending echelons of aircraft flying overhead",
       "Countless banners and standards",
       "Fourteen Legions represented",
-      "Nine primarchs present: Horus, Dorn, Angron, Fulgrim, Lorgar, Mortarion, Sanguinius, Magnus, Jaghatai Khan"
+      "Nine primarchs present: Horus, Dorn, Angron, Fulgrim, Lorgar, Mortarion, Sanguinius, Magnus, Jaghatai Khan",
+      "entire continent reshaped into a flat polished surface",
+      "dry polished rock chippings underfoot",
+      "vast enough to span day and night simultaneously",
+      "four Mechanicum labour fleets used to accomplish the work over months"
     ],
     "last_updated_chapter": "chapter_17"
   },
@@ -9099,21 +8776,6 @@
     "last_updated_chapter": "chapter_18"
   },
   {
-    "id": "spiderland",
-    "name": "Spiderland",
-    "type": "location",
-    "canonical_description": "The interex's name for the world known to the 63rd Expedition as Murder. Referenced by Horus as he recounts the second great mistake of his tenure as Warmaster.",
-    "faction": "",
-    "first_appearance": "chapter_18",
-    "appearance_count": 1,
-    "aliases": [
-      "Murder",
-      "Murder World"
-    ],
-    "visual_notes": [],
-    "last_updated_chapter": "chapter_18"
-  },
-  {
     "id": "urisarach",
     "name": "Urisarach",
     "type": "location",
@@ -9122,6 +8784,8 @@
     "first_appearance": "chapter_18",
     "appearance_count": 1,
     "aliases": [
+      "Murder",
+      "Murder World",
       "Spiderland"
     ],
     "visual_notes": [],
@@ -9394,30 +9058,6 @@
     "last_updated_chapter": "chapter_18"
   },
   {
-    "id": "xenobia",
-    "name": "Xenobia",
-    "type": "location",
-    "canonical_description": "A location associated with the interex, referenced as a named place in the chapter heading.",
-    "faction": "interex",
-    "first_appearance": "chapter_19",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [],
-    "last_updated_chapter": "chapter_19"
-  },
-  {
-    "id": "hall_of_devices",
-    "name": "Hall of Devices",
-    "type": "location",
-    "canonical_description": "A named location referenced in the chapter heading, associated with the interex.",
-    "faction": "interex",
-    "first_appearance": "chapter_19",
-    "appearance_count": 2,
-    "aliases": [],
-    "visual_notes": [],
-    "last_updated_chapter": "chapter_20"
-  },
-  {
     "id": "interex_command_ship_chambers",
     "name": "Interex Command Ship Chambers",
     "type": "location",
@@ -9575,27 +9215,6 @@
     "last_updated_chapter": "chapter_19"
   },
   {
-    "id": "xenobia_principis",
-    "name": "Xenobia Principis",
-    "type": "location",
-    "canonical_description": "A wealthy, regal city on the shores of a wide ammonia sea, set into the slopes of a wide bay so that it shelves down from hill ramparts to sea-level. The continental region behind it is sheathed in verdant rainforest, with lush growth spilling through the city itself. City structures consist of towers of pale grey stone and turrets of brass and silver rising out of a thick dark canopy like hilltop peaks. The vegetation is predominantly dark green, almost black in the frail yellow daylight. The city is structured in descending tiers under the trees, with arched stone viaducts and curved street galleries stepping down to the shoreline in quiet, mottled shadow. Grey towers and ornate campaniles rise above the forest, often capped in polished metal and adorned with high masts from which flags and standards hang in the warm air. It is not a fortress city, with little evidence of defences on the ground or in local orbit.",
-    "faction": "interex",
-    "first_appearance": "chapter_19",
-    "appearance_count": 1,
-    "aliases": [],
-    "visual_notes": [
-      "Towers of pale grey stone",
-      "Turrets of brass and silver",
-      "Vegetation almost black in frail yellow daylight",
-      "Arched stone viaducts and curved street galleries",
-      "Ornate campaniles capped in polished metal",
-      "High masts with flags and standards",
-      "Located on shores of a wide ammonia sea",
-      "Descending tiered structure under heavy forest canopy"
-    ],
-    "last_updated_chapter": "chapter_19"
-  },
-  {
     "id": "xenobia_summit",
     "name": "Xenobia",
     "type": "location",
@@ -9673,7 +9292,9 @@
     "faction": "interex",
     "first_appearance": "chapter_19",
     "appearance_count": 1,
-    "aliases": [],
+    "aliases": [
+      "Xenobia Principis"
+    ],
     "visual_notes": [
       "Green twilight in galleried streets",
       "Hissing canopy of trees overhead",
@@ -9686,7 +9307,15 @@
       "Halls of trade and industry",
       "Museums of art and music",
       "Archives and libraries",
-      "Considered a border settlement compared to Imperial super-hives"
+      "Considered a border settlement compared to Imperial super-hives",
+      "Towers of pale grey stone",
+      "Turrets of brass and silver",
+      "Vegetation almost black in frail yellow daylight",
+      "Arched stone viaducts and curved street galleries",
+      "Ornate campaniles capped in polished metal",
+      "High masts with flags and standards",
+      "Located on shores of a wide ammonia sea",
+      "Descending tiered structure under heavy forest canopy"
     ],
     "last_updated_chapter": "chapter_19"
   },
@@ -9751,10 +9380,11 @@
     "canonical_description": "A large, old hall built into a steep section of the bay slopes of Xenobia Principis, resembling a museum. Encloses many chambers more than two or three storeys high, with plunging display vaults of great size showcasing assemblies of weapons ranging from forests of ancient swords and halberds to modern motorised cannons, all suffused in pale blue glow of energy containment fields. Also holds a dedicated chamber of kinebrach weapons.",
     "faction": "interex",
     "first_appearance": "chapter_19",
-    "appearance_count": 1,
+    "appearance_count": 2,
     "aliases": [
-      "the hall",
-      "museum of weapons"
+      "Hall of Devices",
+      "museum of weapons",
+      "the hall"
     ],
     "visual_notes": [
       "Built into steep bay slopes",
@@ -10121,28 +9751,15 @@
     "first_appearance": "chapter_20",
     "appearance_count": 1,
     "aliases": [
-      "basement loading docks"
+      "Naud's House Exit Hall",
+      "basement loading docks",
+      "exit hall"
     ],
     "visual_notes": [
       "basement level",
       "walls scorched by blue-white energy beams",
       "site of Zakes's death",
-      "connected to a street exit"
-    ],
-    "last_updated_chapter": "chapter_20"
-  },
-  {
-    "id": "nauds_house_exit_hall",
-    "name": "Naud's House Exit Hall",
-    "type": "location",
-    "canonical_description": "The exit hall of Naud's house leading to the basement loading dock, through which Loken's rearguard fought metre by metre under heavy sagittar and energy weapon fire during the extraction.",
-    "faction": "",
-    "first_appearance": "chapter_20",
-    "appearance_count": 1,
-    "aliases": [
-      "exit hall"
-    ],
-    "visual_notes": [
+      "connected to a street exit",
       "contested metre by metre in rearguard action",
       "leads to the loading dock"
     ],

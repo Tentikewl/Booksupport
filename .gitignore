@@ -1,7 +1,5 @@
 .env
-data/chroma_db/
-data/output/
-data/books/
+data/
 __pycache__/
 *.pyc
 *.pyo

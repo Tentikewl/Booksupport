@@ -15,6 +15,7 @@ def cmd_ingest(args: argparse.Namespace) -> None:
     from rag.entity_extractor import extract_entities_from_chunk
     from rag.passage_indexer import index_chunk
     from rag.vector_store import reset_collections
+    from generation.scene_detector import detect_beats
 
     input_path = Path(args.input)
     if not input_path.exists():
@@ -37,8 +38,11 @@ def cmd_ingest(args: argparse.Namespace) -> None:
     chunk_fn = fallback_chunk if args.fallback_chunker else lumberchunk
     chunk_mode = "fallback" if args.fallback_chunker else "LumberChunker"
 
-    state_path = config.DATA_DIR / f"{args.title.replace(' ', '_')}_state.json"
+    title_slug = args.title.replace(" ", "_")
+    state_path = config.DATA_DIR / f"{title_slug}_state.json"
+    beats_path = config.DATA_DIR / f"{title_slug}_beats.json"
     state: dict = {}
+    all_beats: dict = {}
 
     for chapter_id, chapter_text in chapters.items():
         print(f"\n[{chapter_id}] Chunking with {chunk_mode}…")
@@ -53,42 +57,61 @@ def cmd_ingest(args: argparse.Namespace) -> None:
             chapter_entity_ids.extend(chunk_entity_ids)
             index_chunk(chunk, chunk_entity_ids)
 
+        unique_entity_ids = list(set(chapter_entity_ids))
         state[chapter_id] = {
             "n_chunks": len(chunks),
-            "entity_ids": list(set(chapter_entity_ids)),
+            "entity_ids": unique_entity_ids,
         }
-        print(f"  Done — {len(set(chapter_entity_ids))} new entities")
+        print(f"  Done — {len(unique_entity_ids)} new entities")
+
+        print(f"  Detecting scene beats…")
+        beats = detect_beats(chapter_id, chapter_text, unique_entity_ids)
+        all_beats[chapter_id] = beats
+        print(f"  {len(beats)} beat(s) above visual strength threshold")
 
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=2))
+    beats_path.write_text(json.dumps(all_beats, indent=2))
     print(f"\nIngest complete. State saved to {state_path}")
+    print(f"Scene beats saved to {beats_path}")
 
 
 def cmd_generate(args: argparse.Namespace) -> None:
-    from generation.scene_detector import detect_beats
     from rag.prompt_composer import compose_prompt
     from generation.image_generator import generate_chapter_images
     from rag.entity_extractor import get_all_entities
-    from ingest.epub_parser import load_book
 
-    input_path = Path(args.input)
-    if not input_path.exists():
-        sys.exit(f"File not found: {input_path}")
-
-    chapters = load_book(input_path)
     entities = get_all_entities()
     known_ids = [e["id"] for e in entities]
 
     title_slug = args.title.replace(" ", "_")
+    beats_path = config.DATA_DIR / f"{title_slug}_beats.json"
     output_dir = config.OUTPUT_DIR / title_slug
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Load pre-detected beats from ingest if available, otherwise detect live
+    if beats_path.exists():
+        print(f"Loading pre-detected beats from {beats_path}…")
+        all_beats: dict = json.loads(beats_path.read_text())
+    else:
+        from generation.scene_detector import detect_beats
+        from ingest.epub_parser import load_book
+        if not args.input:
+            sys.exit("--input is required when no pre-detected beats file exists for this title.")
+        input_path = Path(args.input)
+        if not input_path.exists():
+            sys.exit(f"File not found: {input_path}")
+        print("No beats file found — detecting from book text…")
+        chapters = load_book(input_path)
+        all_beats = {
+            ch_id: detect_beats(ch_id, ch_text, known_ids)
+            for ch_id, ch_text in chapters.items()
+        }
+
     chapter_results: list[dict] = []
 
-    for chapter_id, chapter_text in chapters.items():
-        print(f"\n[{chapter_id}] Detecting scene beats…")
-        beats = detect_beats(chapter_id, chapter_text, known_ids)
-        print(f"  {len(beats)} beat(s) above visual strength threshold")
+    for chapter_id, beats in all_beats.items():
+        print(f"\n[{chapter_id}] {len(beats)} beat(s) above visual strength threshold")
 
         if not beats:
             chapter_results.append({"chapter_id": chapter_id, "images": []})
@@ -194,10 +217,10 @@ def main() -> None:
         cmd_test_image(args)
         return
 
-    if not args.input:
-        parser.error("--input is required for mode: " + args.mode)
     if not args.title:
         parser.error("--title is required for mode: " + args.mode)
+    if not args.input and args.mode != "generate-only":
+        parser.error("--input is required for mode: " + args.mode)
 
     if args.mode == "extract-only":
         cmd_extract_only(args)

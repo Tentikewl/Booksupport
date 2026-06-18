@@ -19,8 +19,10 @@ _PROMPT_TEMPLATE = """\
 """
 
 _STYLE = (
-    "Detailed fantasy illustration, painterly, dramatic lighting, "
-    "cinematic composition, high detail, digital art"
+    "Grimdark sci-fi illustration, Warhammer 40K Horus Heresy aesthetic, "
+    "hyper-detailed power armour, cinematic dramatic lighting, digital art, highly detailed. "
+    "Characters are Space Marines — towering superhuman warriors in full ceramite power armour "
+    "with aquila emblems, sealed helmets, and bolter weapons unless otherwise described."
 )
 
 

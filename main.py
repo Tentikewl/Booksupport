@@ -105,6 +105,12 @@ def cmd_generate(args: argparse.Namespace) -> None:
     if beats_path.exists():
         print(f"Loading pre-detected beats from {beats_path}…")
         all_beats: dict = json.loads(beats_path.read_text())
+        if args.chapter:
+            chapter_key = f"chapter_{int(args.chapter):02d}"
+            if chapter_key not in all_beats:
+                sys.exit(f"Chapter '{chapter_key}' not found in beats file.")
+            all_beats = {chapter_key: all_beats[chapter_key]}
+            print(f"  Filtering to {chapter_key} only.")
     else:
         from generation.scene_detector import detect_beats
         from ingest.epub_parser import load_book
@@ -211,6 +217,7 @@ def main() -> None:
     parser.add_argument("--fallback-chunker", action="store_true", dest="fallback_chunker",
                         help="Use simple recursive splitter instead of LumberChunker (cheaper, less accurate)")
     parser.add_argument("--reset", action="store_true", help="Reset vector store before ingesting (fresh run)")
+    parser.add_argument("--chapter", default=None, help="Only generate images for this chapter number (e.g. 1)")
     parser.add_argument(
         "--mode",
         choices=["full", "extract-only", "generate-only", "test-image"],

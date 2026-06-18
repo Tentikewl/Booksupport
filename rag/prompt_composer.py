@@ -2,8 +2,43 @@
 from __future__ import annotations
 
 from rag.passage_indexer import query_passages
-from rag.entity_extractor import get_entity
+from rag.entity_extractor import get_entity, get_all_entities
 from rag.glossary import expand_prompt
+
+_faction_visual_cache: dict[str, list[str]] = {}
+
+
+def _faction_visual_notes(faction_id: str) -> list[str]:
+    """Aggregate visual notes for a faction from the faction entity + its objects."""
+    if faction_id in _faction_visual_cache:
+        return _faction_visual_cache[faction_id]
+
+    notes: list[str] = []
+    seen: set[str] = set()
+
+    # Pull from the faction entity itself
+    faction_entity = get_entity(faction_id)
+    if faction_entity:
+        for n in faction_entity.get("visual_notes", []):
+            if n.lower() not in seen:
+                notes.append(n)
+                seen.add(n.lower())
+        if faction_entity.get("canonical_description"):
+            notes.insert(0, faction_entity["canonical_description"].split(".")[0])
+
+    # Pull visual notes from equipment objects belonging to this faction (top 3 only)
+    all_entities = get_all_entities()
+    object_notes: list[str] = []
+    for e in all_entities:
+        if e.get("faction") == faction_id and e["type"] == "object":
+            for n in e.get("visual_notes", []):
+                if n.lower() not in seen:
+                    object_notes.append(n)
+                    seen.add(n.lower())
+    notes.extend(object_notes[:3])
+
+    _faction_visual_cache[faction_id] = notes[:6]  # cap to keep prompts tight
+    return _faction_visual_cache[faction_id]
 
 
 _PROMPT_TEMPLATE = """\
@@ -94,10 +129,20 @@ def compose_prompt(beat: dict) -> str:
     # Build character block
     char_lines: list[str] = []
     for char in characters:
-        notes = "; ".join(char.get("visual_notes", []))
+        notes = list(char.get("visual_notes", []))
         desc = char["canonical_description"]
-        if notes:
-            desc = f"{desc}. {notes}"
+        # Inject faction visual markings (armour colour, insignia, etc.)
+        faction_id = char.get("faction", "")
+        if faction_id:
+            faction_notes = _faction_visual_notes(faction_id)
+            seen = {n.lower() for n in notes}
+            for fn in faction_notes:
+                if fn.lower() not in seen:
+                    notes.append(fn)
+                    seen.add(fn.lower())
+        notes_str = "; ".join(notes)
+        if notes_str:
+            desc = f"{desc}. {notes_str}"
         char_lines.append(f"- {char['name']}: {desc}")
 
     character_block = "\n".join(char_lines) if char_lines else "- No named characters — focus on the scene and atmosphere"

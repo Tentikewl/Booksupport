@@ -75,9 +75,12 @@ def cmd_ingest(args: argparse.Namespace) -> None:
         print(f"  Done — {len(unique_entity_ids)} new entities")
 
         print(f"  Detecting scene beats…")
-        beats = detect_beats(chapter_id, chapter_text, unique_entity_ids)
+        beats, visual_changes = detect_beats(chapter_id, chapter_text, unique_entity_ids)
         all_beats[chapter_id] = beats
+        all_beats[f"{chapter_id}__visual_changes"] = visual_changes
         print(f"  {len(beats)} beat(s) above visual strength threshold")
+        if visual_changes:
+            print(f"  {len(visual_changes)} visual character change(s) detected")
 
         # Save after every chapter so a crash doesn't lose progress
         state_path.parent.mkdir(parents=True, exist_ok=True)
@@ -122,10 +125,10 @@ def cmd_generate(args: argparse.Namespace) -> None:
             sys.exit(f"File not found: {input_path}")
         print("No beats file found — detecting from book text…")
         chapters = load_book(input_path)
-        all_beats = {
-            ch_id: detect_beats(ch_id, ch_text, known_ids)
-            for ch_id, ch_text in chapters.items()
-        }
+        for ch_id, ch_text in chapters.items():
+            beats, visual_changes = detect_beats(ch_id, ch_text, known_ids)
+            all_beats[ch_id] = beats
+            all_beats[f"{ch_id}__visual_changes"] = visual_changes
 
     # Load state to know which entities first appear in each chapter
     title_slug = args.title.replace(" ", "_")
@@ -135,6 +138,8 @@ def cmd_generate(args: argparse.Namespace) -> None:
     chapter_results: list[dict] = []
 
     for chapter_id, beats in all_beats.items():
+        if chapter_id.endswith("__visual_changes"):
+            continue
         print(f"\n[{chapter_id}] {len(beats)} beat(s) above visual strength threshold")
 
         # Scene beat images
@@ -158,6 +163,31 @@ def cmd_generate(args: argparse.Namespace) -> None:
             print(f"  {len(new_entities)} new entities — generating introductions…")
             intro_images = generate_intro_images(chapter_id, new_entities, output_dir)
             print(f"  {len(intro_images)} introduction illustration(s) generated")
+
+        # Re-introduction portraits for characters with major visual changes this chapter
+        visual_changes = all_beats.get(f"{chapter_id}__visual_changes", [])
+        if visual_changes:
+            from generation.intro_illustrator import build_reintro_prompts
+            from generation.image_generator import generate_image
+            reintro_specs = build_reintro_prompts(chapter_id, visual_changes)
+            reintro_dir = output_dir / chapter_id / "introductions"
+            reintro_dir.mkdir(parents=True, exist_ok=True)
+            for spec in reintro_specs:
+                name = spec["entity"].get("name", spec["entity"]["id"])
+                print(f"  Re-introducing {name} (visual change)…")
+                dest = reintro_dir / spec["filename"]
+                try:
+                    image_path = generate_image(spec["prompt"], dest)
+                    intro_images.append({
+                        "entity": spec["entity"],
+                        "kind": spec["kind"],
+                        "filename": spec["filename"],
+                        "image_path": str(image_path),
+                        "prompt": spec["prompt"],
+                        "is_reintro": True,
+                    })
+                except Exception as e:
+                    print(f"  Warning: failed reintro for {name}: {e}")
 
         chapter_results.append({
             "chapter_id": chapter_id,
@@ -228,13 +258,17 @@ def cmd_rebuild_gallery(args: argparse.Namespace) -> None:
         intro_images = []
         if intro_dir.exists():
             for f in sorted(intro_dir.glob("*.jpg")):
-                stem = f.stem  # e.g. chapter_01_intro_horus_portrait
+                stem = f.stem  # e.g. chapter_01_intro_horus_portrait or chapter_01_change_jubal_portrait
+                is_reintro = f"_{chapter_id}_change_" in f"_{stem}"
+                prefix = f"{chapter_id}_change_" if is_reintro else f"{chapter_id}_intro_"
                 kind = "character" if stem.endswith("_portrait") else "concept"
-                # Strip chapter prefix and _portrait/_concept suffix to get entity ID
-                inner = stem[len(f"{chapter_id}_intro_"):]
+                inner = stem[len(prefix):]
                 entity_id = inner[: inner.rfind("_")]
                 entity = next((e for e in entities if e["id"] == entity_id), {"id": entity_id, "name": entity_id})
-                intro_images.append({"image_path": str(f), "entity": entity, "kind": kind})
+                entry = {"image_path": str(f), "entity": entity, "kind": kind}
+                if is_reintro:
+                    entry["is_reintro"] = True
+                intro_images.append(entry)
 
         chapter_results.append({"chapter_id": chapter_id, "images": images, "intro_images": intro_images})
         print(f"  {chapter_id}: {len(images)} beat(s), {len(intro_images)} intro(s)")

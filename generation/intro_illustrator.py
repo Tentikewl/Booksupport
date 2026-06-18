@@ -85,10 +85,11 @@ def build_intro_prompts(chapter_id: str, entities: list[dict]) -> list[dict]:
 
     specs = []
     for entity in ranked:
-
         name = entity.get("name", entity["id"])
-        desc = entity.get("canonical_description", "")
-        notes = "; ".join(entity.get("visual_notes", []))
+        # Use first-appearance snapshot so intro shows how they looked when introduced,
+        # not their final accumulated state (avoids spoilers like Jubal's transformation)
+        desc = entity.get("first_appearance_description") or entity.get("canonical_description", "")
+        notes = "; ".join(entity.get("first_appearance_visual_notes") or entity.get("visual_notes", []))
         kind = entity["type"]
 
         if kind == "character":
@@ -112,6 +113,45 @@ def build_intro_prompts(chapter_id: str, entities: list[dict]) -> list[dict]:
             "prompt": prompt,
             "filename": filename,
             "kind": kind,
+        })
+
+    return specs
+
+
+def build_reintro_prompts(chapter_id: str, visual_changes: list[dict]) -> list[dict]:
+    """
+    Build re-introduction illustration specs for characters who undergo a major
+    visual change in this chapter (transformation, corruption, new armour, etc.).
+
+    visual_changes items: {entity_id, change_description, mood}
+    """
+    from rag.entity_extractor import get_entity
+
+    specs = []
+    for change in visual_changes:
+        eid = change.get("entity_id", "")
+        entity = get_entity(eid)
+        if not entity:
+            continue
+
+        name = entity.get("name", eid)
+        change_desc = change.get("change_description", "")
+        mood = change.get("mood", "grimdark")
+
+        prompt = expand_prompt(_CHARACTER_PORTRAIT_TEMPLATE.format(
+            name=name,
+            description=change_desc,
+            notes=f"Mood: {mood}. This depicts a pivotal visual transformation — render the changed form faithfully.",
+        ))
+        filename = f"{chapter_id}_change_{eid}_portrait.jpg"
+
+        specs.append({
+            "entity": entity,
+            "prompt": prompt,
+            "filename": filename,
+            "kind": "character",
+            "is_reintro": True,
+            "change_description": change_desc,
         })
 
     return specs

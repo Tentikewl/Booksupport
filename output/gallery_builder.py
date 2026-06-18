@@ -175,14 +175,16 @@ def build_gallery(
             img_path = Path(item["image_path"])
             name = entity.get("name", entity.get("id", ""))
             kind = item["kind"]
-            desc = entity.get("canonical_description", "")
-            label = f"{'Portrait' if kind == 'character' else 'Concept'} — {name}"
+            is_reintro = item.get("is_reintro", False)
+            desc = item.get("change_description", "") if is_reintro else entity.get("canonical_description", "")
+            label = f"{'Transformation' if is_reintro else ('Portrait' if kind == 'character' else 'Concept')} — {name}"
+            badge = "Transformation" if is_reintro else ("New Character" if kind == "character" else "New " + kind.title())
             src = _img_to_b64(img_path) if img_path.exists() else ""
             intros_html.append(
                 f'<div class="beat-card intro-card" onclick="openLightbox({json.dumps(src)}, {json.dumps(label)}, {json.dumps(kind)})">'
                 f'<img src="{src}" alt="{_esc(name)}" loading="lazy">'
                 f'<div class="beat-caption">'
-                f'<div class="beat-number intro-label">{"New Character" if kind == "character" else "New " + kind.title()}</div>'
+                f'<div class="beat-number intro-label">{_esc(badge)}</div>'
                 f'<p>{_esc(name)}</p>'
                 f'<div class="beat-mood">{_esc(desc[:120])}{"…" if len(desc) > 120 else ""}</div>'
                 f'</div></div>'

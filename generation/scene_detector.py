@@ -22,13 +22,23 @@ Avoid:
 - Beats that are nearly identical to another beat you've selected
 - Internal monologue with no external action
 
-Return a JSON array. Each beat must have:
+Return a JSON object with two keys:
+
+"beats" — array of scene beats, each with:
   "position"           — float 0.0–1.0, approximate position through chapter
   "visual_description" — one vivid sentence describing the scene visually
   "mood"               — one or two words (e.g. "tense", "ethereal", "grim")
   "location"           — location name or id (snake_case)
   "entities_present"   — list of entity id strings (snake_case) for characters/objects present
   "visual_strength"    — float 0.0–1.0, how visually strong/illustratable this beat is
+
+"visual_changes" — array of characters who undergo a significant VISUAL change in this chapter
+  (transformation, corruption, mutation, dramatic new armour/appearance, death, wounding that changes their look).
+  Only include if the change is visually dramatic and permanent/lasting.
+  Each item:
+  "entity_id"          — snake_case id of the character
+  "change_description" — one vivid sentence describing their new/changed appearance
+  "mood"               — one or two words describing the mood of the transformation
 
 Return ONLY valid JSON, no prose, no markdown fences.
 
@@ -70,11 +80,18 @@ def detect_beats(
     raw = re.sub(r"\s*```$", "", raw)
 
     try:
-        beats = json.loads(raw)
-        if not isinstance(beats, list):
-            beats = []
+        parsed = json.loads(raw)
+        if isinstance(parsed, list):
+            # Backwards compat: old format returned a bare array
+            beats = parsed
+            visual_changes = []
+        elif isinstance(parsed, dict):
+            beats = parsed.get("beats", [])
+            visual_changes = parsed.get("visual_changes", [])
+        else:
+            beats, visual_changes = [], []
     except json.JSONDecodeError:
-        beats = []
+        beats, visual_changes = [], []
 
     # Filter by visual strength
     beats = [b for b in beats if float(b.get("visual_strength", 0)) >= visual_strength_threshold]
@@ -83,4 +100,4 @@ def detect_beats(
     for beat in beats:
         beat["chapter"] = chapter_id
 
-    return beats
+    return beats, visual_changes

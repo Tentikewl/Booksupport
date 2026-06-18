@@ -133,9 +133,20 @@ def _copy_image(src: Path, output_dir: Path) -> str:
     return "images/" + str(rel).replace("\\", "/")
 
 
-def _img_to_b64(path: Path) -> str:
-    data = path.read_bytes()
-    b64 = base64.b64encode(data).decode()
+def _img_to_b64(path: Path, max_width: int = 800) -> str:
+    """Encode image as base64, resizing to max_width to keep file size small."""
+    try:
+        from PIL import Image
+        import io
+        img = Image.open(path)
+        if img.width > max_width:
+            ratio = max_width / img.width
+            img = img.resize((max_width, int(img.height * ratio)), Image.LANCZOS)
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG", quality=75, optimize=True)
+        b64 = base64.b64encode(buf.getvalue()).decode()
+    except Exception:
+        b64 = base64.b64encode(path.read_bytes()).decode()
     return f"data:image/jpeg;base64,{b64}"
 
 

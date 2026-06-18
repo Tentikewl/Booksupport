@@ -41,10 +41,20 @@ def cmd_ingest(args: argparse.Namespace) -> None:
     title_slug = args.title.replace(" ", "_")
     state_path = config.DATA_DIR / f"{title_slug}_state.json"
     beats_path = config.DATA_DIR / f"{title_slug}_beats.json"
+
+    # Load existing progress unless resetting
     state: dict = {}
     all_beats: dict = {}
+    if not args.reset and state_path.exists():
+        state = json.loads(state_path.read_text())
+    if not args.reset and beats_path.exists():
+        all_beats = json.loads(beats_path.read_text())
 
     for chapter_id, chapter_text in chapters.items():
+        if chapter_id in state and chapter_id in all_beats:
+            print(f"\n[{chapter_id}] Already processed — skipping")
+            continue
+
         print(f"\n[{chapter_id}] Chunking with {chunk_mode}…")
         chunks = chunk_fn(chapter_text, chapter_id)
         print(f"  {len(chunks)} chunk(s)")
@@ -69,9 +79,11 @@ def cmd_ingest(args: argparse.Namespace) -> None:
         all_beats[chapter_id] = beats
         print(f"  {len(beats)} beat(s) above visual strength threshold")
 
-    state_path.parent.mkdir(parents=True, exist_ok=True)
-    state_path.write_text(json.dumps(state, indent=2))
-    beats_path.write_text(json.dumps(all_beats, indent=2))
+        # Save after every chapter so a crash doesn't lose progress
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps(state, indent=2))
+        beats_path.write_text(json.dumps(all_beats, indent=2))
+
     print(f"\nIngest complete. State saved to {state_path}")
     print(f"Scene beats saved to {beats_path}")
 

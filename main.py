@@ -50,7 +50,15 @@ def cmd_ingest(args: argparse.Namespace) -> None:
     if not args.reset and beats_path.exists():
         all_beats = json.loads(beats_path.read_text())
 
+    max_chapter = int(args.max_chapter) if getattr(args, "max_chapter", None) else None
+
     for chapter_id, chapter_text in chapters.items():
+        if max_chapter is not None:
+            chnum = int(chapter_id.split("_")[-1]) if chapter_id.split("_")[-1].isdigit() else 0
+            if chnum > max_chapter:
+                print(f"\n[{chapter_id}] Reached --max-chapter {max_chapter} — stopping")
+                break
+
         if chapter_id in state and chapter_id in all_beats:
             print(f"\n[{chapter_id}] Already processed — skipping")
             continue
@@ -322,6 +330,7 @@ def main() -> None:
                         help="Use simple recursive splitter instead of LumberChunker (cheaper, less accurate)")
     parser.add_argument("--reset", action="store_true", help="Reset vector store before ingesting (fresh run)")
     parser.add_argument("--chapter", default=None, help="Only generate images for this chapter number (e.g. 1)")
+    parser.add_argument("--max-chapter", default=None, dest="max_chapter", help="Stop ingestion after this chapter number (e.g. 2)")
     parser.add_argument(
         "--mode",
         choices=["full", "extract-only", "generate-only", "merge-entities", "test-image", "rebuild-gallery"],

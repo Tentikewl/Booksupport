@@ -198,6 +198,48 @@ def cmd_full(args: argparse.Namespace) -> None:
     cmd_generate(args)
 
 
+def cmd_rebuild_gallery(args: argparse.Namespace) -> None:
+    """Rebuild gallery HTML from images already on disk — no generation."""
+    from rag.entity_extractor import get_all_entities
+    from output.gallery_builder import build_gallery
+
+    title_slug = args.title.replace(" ", "_")
+    output_dir = config.OUTPUT_DIR / title_slug
+    beats_path = config.DATA_DIR / f"{title_slug}_beats.json"
+
+    all_beats: dict = {}
+    if beats_path.exists():
+        all_beats = json.loads(beats_path.read_text())
+
+    entities = get_all_entities()
+    chapter_results: list[dict] = []
+
+    for chapter_dir in sorted(output_dir.glob("chapter_*")):
+        chapter_id = chapter_dir.name
+        beats = all_beats.get(chapter_id, [])
+
+        beat_files = sorted(chapter_dir.glob("*_beat_*.jpg"))
+        images = []
+        for i, f in enumerate(beat_files):
+            beat_meta = beats[i] if i < len(beats) else {}
+            images.append({"image_path": str(f), "beat": beat_meta})
+
+        intro_dir = chapter_dir / "introductions"
+        intro_images = []
+        if intro_dir.exists():
+            for f in sorted(intro_dir.glob("*.jpg")):
+                entity_id = f.stem
+                entity = next((e for e in entities if e["id"] == entity_id), {"id": entity_id, "name": entity_id})
+                kind = entity.get("type", "character")
+                intro_images.append({"image_path": str(f), "entity": entity, "kind": kind})
+
+        chapter_results.append({"chapter_id": chapter_id, "images": images, "intro_images": intro_images})
+        print(f"  {chapter_id}: {len(images)} beat(s), {len(intro_images)} intro(s)")
+
+    gallery_path = build_gallery(args.title, chapter_results, entities, output_dir / "gallery")
+    print(f"\nGallery rebuilt: {gallery_path}")
+
+
 def cmd_test_image(_args: argparse.Namespace) -> None:
     """Generate a single test image from a hardcoded beat to verify the pipeline."""
     from generation.image_generator import generate_image
@@ -245,12 +287,13 @@ def main() -> None:
     parser.add_argument("--chapter", default=None, help="Only generate images for this chapter number (e.g. 1)")
     parser.add_argument(
         "--mode",
-        choices=["full", "extract-only", "generate-only", "merge-entities", "test-image"],
+        choices=["full", "extract-only", "generate-only", "merge-entities", "test-image", "rebuild-gallery"],
         default="full",
         help=(
             "full: ingest + generate (default); "
             "extract-only: ingest and build entity store only; "
             "generate-only: generate images from existing entity store; "
+            "rebuild-gallery: rebuild gallery HTML from existing images on disk (no generation); "
             "test-image: generate one hardcoded test image to verify the pipeline"
         ),
     )
@@ -259,6 +302,12 @@ def main() -> None:
 
     if args.mode == "test-image":
         cmd_test_image(args)
+        return
+
+    if args.mode == "rebuild-gallery":
+        if not args.title:
+            parser.error("--title is required for rebuild-gallery")
+        cmd_rebuild_gallery(args)
         return
 
     if args.mode == "merge-entities":

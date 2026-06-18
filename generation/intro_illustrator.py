@@ -35,10 +35,11 @@ Accurate detail, dramatic atmosphere. No unrelated figures or elements.\
 
 
 def _significance_score(entity: dict) -> int:
-    """Score an entity by visual richness. Higher = more worth illustrating."""
+    """Score an entity by importance and visual richness. Higher = more worth illustrating."""
     desc = entity.get("canonical_description", "")
     notes = entity.get("visual_notes", [])
-    score = 0
+    appearance_count = entity.get("appearance_count", 1)
+
     visual_keywords = [
         "armour", "armor", "wear", "clad", "tall", "short", "hair", "eye",
         "face", "skin", "built", "figure", "spacecraft", "vehicle", "ship",
@@ -46,10 +47,14 @@ def _significance_score(entity: dict) -> int:
         "robe", "cloth", "uniform", "plate", "helm", "helmet",
     ]
     combined = (desc + " ".join(notes)).lower()
-    score += sum(1 for kw in visual_keywords if kw in combined)
-    score += len(notes) * 2       # visual notes are high signal
-    score += min(len(desc) // 50, 5)  # description length, capped
-    return score
+    visual_score = sum(1 for kw in visual_keywords if kw in combined)
+    visual_score += len(notes) * 2
+    visual_score += min(len(desc) // 50, 5)
+
+    # Appearance count is the strongest signal for importance — weight it heavily
+    importance_score = min(appearance_count * 4, 40)
+
+    return visual_score + importance_score
 
 
 def _is_significant(entity: dict) -> bool:

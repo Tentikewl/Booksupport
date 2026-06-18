@@ -18,17 +18,36 @@ def generate_image(prompt: str, output_path: Path) -> Path:
 
     client = replicate.Client(api_token=config.REPLICATE_API_TOKEN)
 
-    output = client.run(
-        config.IMAGE_MODEL,
-        input={
-            "prompt": prompt,
-            "width": config.IMAGE_WIDTH,
-            "height": config.IMAGE_HEIGHT,
-            "num_inference_steps": 4,  # flux-schnell uses 1-4 steps
-            "output_format": "jpg",
-            "output_quality": 85,
-        },
-    )
+    delay = 10
+    last_exc: Exception | None = None
+    for attempt in range(5):
+        try:
+            output = client.run(
+                config.IMAGE_MODEL,
+                input={
+                    "prompt": prompt,
+                    "width": config.IMAGE_WIDTH,
+                    "height": config.IMAGE_HEIGHT,
+                    "num_inference_steps": 4,  # flux-schnell uses 1-4 steps
+                    "output_format": "jpg",
+                    "output_quality": 85,
+                },
+            )
+            break
+        except Exception as exc:
+            last_exc = exc
+            if "429" in str(exc) or "throttled" in str(exc).lower() or "rate limit" in str(exc).lower():
+                print(f"  Rate limited — waiting {delay}s before retry {attempt + 1}/5…")
+                time.sleep(delay)
+                delay = min(delay * 2, 120)
+            elif "E9828" in str(exc) or "unexpected error" in str(exc).lower():
+                print(f"  Transient Replicate error — waiting {delay}s before retry {attempt + 1}/5…")
+                time.sleep(delay)
+                delay = min(delay * 2, 60)
+            else:
+                raise
+    else:
+        raise last_exc  # type: ignore[misc]
 
     # Replicate returns a list of URLs or file-like objects
     if isinstance(output, list):
@@ -36,12 +55,14 @@ def generate_image(prompt: str, output_path: Path) -> Path:
     else:
         url_or_file = output
 
-    if hasattr(url_or_file, "read"):
+    # Prefer .url attribute (Replicate SDK v1 FileOutput) to avoid 403s on .read()
+    if hasattr(url_or_file, "url"):
+        _download(url_or_file.url, output_path)
+    elif hasattr(url_or_file, "read"):
         image_data = url_or_file.read()
         output_path.write_bytes(image_data)
     else:
-        url = str(url_or_file)
-        _download(url, output_path)
+        _download(str(url_or_file), output_path)
 
     return output_path
 

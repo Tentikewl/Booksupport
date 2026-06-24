@@ -21,7 +21,7 @@ REPLICATE_API_TOKEN = os.environ.get("REPLICATE_API_TOKEN", "")
 
 # LLM models
 CHUNKER_MODEL = "claude-haiku-4-5-20251001"
-EXTRACTOR_MODEL = "claude-sonnet-4-6"
+EXTRACTOR_MODEL = "claude-haiku-4-5-20251001"
 SCENE_MODEL = "claude-sonnet-4-6"
 
 # Image generation
@@ -37,3 +37,6 @@ CHILD_CHUNK_TOKENS = 150
 MIN_BEATS_PER_CHAPTER = 3
 MAX_BEATS_PER_CHAPTER = 5
 VISUAL_STRENGTH_THRESHOLD = 0.6
+
+# Introduction illustrations
+MAX_INTROS_PER_CHAPTER = 8

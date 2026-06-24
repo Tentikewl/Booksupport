@@ -118,6 +118,9 @@ def extract_entities_from_chunk(chunk: Chunk) -> list[dict]:
                     "aliases": json.dumps(entity.get("aliases", [])),
                     "visual_notes": json.dumps(entity.get("visual_notes", [])),
                     "conflicts": json.dumps([]),
+                    # Snapshot of appearance at introduction — never overwritten
+                    "first_appearance_description": description,
+                    "first_appearance_visual_notes": json.dumps(entity.get("visual_notes", [])),
                 }],
             )
             new_entities.append(entity)
@@ -176,11 +179,14 @@ def get_entity(eid: str) -> dict | None:
     if not result["ids"]:
         return None
     meta = result["metadatas"][0]
+    full_desc = result["documents"][0]
     return {
         "id": eid,
         "name": meta.get("name", eid),
         "type": meta.get("type", "unknown"),
-        "canonical_description": result["documents"][0],
+        "canonical_description": full_desc,
+        "first_appearance_description": meta.get("first_appearance_description") or full_desc,
+        "first_appearance_visual_notes": json.loads(meta.get("first_appearance_visual_notes", "[]")),
         "faction": meta.get("faction", ""),
         "first_appearance": meta.get("first_appearance", ""),
         "appearance_count": int(meta.get("appearance_count", 1)),
@@ -197,11 +203,14 @@ def get_all_entities() -> list[dict]:
     entities = []
     for i, eid in enumerate(result["ids"]):
         meta = result["metadatas"][i]
+        full_desc = result["documents"][i]
         entities.append({
             "id": eid,
             "name": meta.get("name", eid),
             "type": meta.get("type", "unknown"),
-            "canonical_description": result["documents"][i],
+            "canonical_description": full_desc,
+            "first_appearance_description": meta.get("first_appearance_description") or full_desc,
+            "first_appearance_visual_notes": json.loads(meta.get("first_appearance_visual_notes", "[]")),
             "faction": meta.get("faction", ""),
             "first_appearance": meta.get("first_appearance", ""),
             "appearance_count": int(meta.get("appearance_count", 1)),
